@@ -4,11 +4,7 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
         <div class="space-y-4">
-            <div>
-                <x-label for="name">{{ __('Full Name') }} <span class="text-rose-500">*</span></x-label>
-                <x-input id="name" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
-
+            
             <div>
                 <x-label for="email">{{ __('Email Address') }} <span class="text-rose-500">*</span></x-label>
                 <x-input id="email" type="email" name="email" :value="old('email')" required />

@@ -22,9 +22,9 @@ use App\Http\Controllers\PencatatanController;
 |
 */
 
-// Route::redirect('/', 'login');
+Route::redirect('/', 'login');
 
-// Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -41,4 +41,4 @@ use App\Http\Controllers\PencatatanController;
     Route::fallback(function() {
         return view('pages/utility/404');
     });    
-// });
+});

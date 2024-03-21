@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class PegawaiController extends Controller
 {
@@ -12,8 +13,12 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        $pegawais = Pegawai::all(); 
-        return view('pages.pegawai.index', compact('pegawais'));
+        $title = 'Pegawai';
+        $actionId = '/pegawai/{{$item->id_pegawai}}';
+        $header = ['ID Pegawai','Nama Lengkap','Jenis Kelamin','Telepon','Kantor Cabang','Jabatan','Gaji','Foto'];
+        $data = Pegawai::all();
+         
+        return view('pages.pegawai.index', compact('title','header','actionId','data'));
     }
 
     /**

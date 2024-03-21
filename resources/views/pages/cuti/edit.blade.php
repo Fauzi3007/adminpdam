@@ -13,7 +13,6 @@
             <input type="text"  class="border form-input w-1/2 uppercase border-gray-300 rounded-md px-4 py-2 ml-4 @error('nama_direktorat') is-invalid @enderror" name="nama_direktorat" value="{{ old('nama_direktorat',$direktorats->nama_direktorat)}}">
           
           </div>
-          <x-jet-validation-errors class="mt-4" />  
 
             <button type="submit" class="mt-3 px-4 py-2 rounded-md bg-blue-500 text-white">Update</button>
         </form>

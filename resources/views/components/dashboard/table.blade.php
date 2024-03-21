@@ -10,50 +10,43 @@
                 <!-- Table header -->
                 <thead class="text-xs font-semibold uppercase text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50">
                     <tr>
+                        @foreach ($header as $head)
+                            
                         <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-left">Name</div>
+                            <div class="font-semibold text-left">{{$head}}</div>
                         </th>
-                        <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-left">Email</div>
-                        </th>
-                        <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-left">Spent</div>
-                        </th>
-                        <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">Country</div>
-                        </th>
+                        @endforeach
+                        <th>Action</th>
+                       
                     </tr>
                 </thead>
                 <!-- Table body -->
                 <tbody class="text-sm divide-y divide-slate-100 dark:divide-slate-700">
                     @forelse($tabledata as $item)
                     <tr>
+                        @foreach ($header as $column)
                         <td class="p-2 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 shrink-0 mr-2 sm:mr-3">
-                                    <img class="rounded-full" src="{{ asset('images/user-36-05.jpg') }}" width="40" height="40" alt="Alex Shatov" />
-                                </div>
-                                <div class="font-medium text-slate-800">{{$item['name']}}</div>
-                            </div>
+                            @if(isset($item[$column]))
+                                <div>{{ $item->$column }}</div>
+                            @endif
                         </td>
-                        <td class="p-2 whitespace-nowrap">
-                            <div class="text-left">{{$item['email']}}</div>
-                        </td>
-                        <td class="p-2 whitespace-nowrap">
-                            <div class="text-left font-medium text-green-500">{{$item['spent']}}</div>
-                        </td>
-                        <td class="p-2 whitespace-nowrap">
-                            <div class="text-lg text-center">{{$item['country']}}</div>
+                        @endforeach
+                        <td class="p-2 whitespace-nowrap flex justify-center items-center gap-1">
+                            <a href="{{ $action }}/edit" class="px-4 py-2 rounded-md bg-yellow-300 hover:bg-yellow-400 text-white sm:mt-0">Edit</a>
+                            <form action="{{ $action }}" method="post" class="d-inline">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="p-2 rounded-md bg-red-600 hover:bg-red-500 text-white sm:mt-0" onclick="return confirm('Yakin akan menghapus data?')"> Hapus </button>
+                            </form>
                         </td>
                     </tr>
                     @empty
-                    
                     <tr>
-                    <td colspan="4" class="text-center p-4">No Data found</td>
+                        <td colspan="{{ count($header) + 1 }}" class="text-center p-4">No Data found</td>
                     </tr>
-                @endforelse
-                                                              
+                    @endforelse
                 </tbody>
+                
             </table>
         
         </div>

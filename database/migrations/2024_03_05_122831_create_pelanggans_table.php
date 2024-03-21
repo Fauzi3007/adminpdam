@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_pelanggan');
             $table->string('nomor_pelanggan', 20);
             $table->string('nama_pelanggan', 50);
-            $table->string('alamat', 300);
+            $table->string('alamat', 100);
             $table->double('latitude');
             $table->double('longitude');
             $table->foreignId('lingkup_cabang')->constrained(

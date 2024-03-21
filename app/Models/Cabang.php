@@ -9,7 +9,7 @@ class Cabang extends Model
 {
     use HasFactory;
 
-    protected $table = 'cabang';
+    protected $table = 'cabangs';
 
     protected $primaryKey = 'id_cabang';
 

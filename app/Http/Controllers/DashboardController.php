@@ -11,44 +11,14 @@ class DashboardController extends Controller
     {
         
         $title = 'Dashboard';
-        $data = [
-            [
-                "name" => "John Doe",
-                "email" => "johndoe@example.com",
-                "spent" => 100.50,
-                "country" => "Indonesia"
-            ],
-            [
-                "name" => "Jane Smith",
-                "email" => "janesmith@example.com",
-                "spent" => 25.99,
-                "country" => "United States"
-            ]
-        ];
-
+        $header = ['nama','email','spent','country',];
+        $actionId = '';
+        $data = [];
        
         
           
-        return view('pages/dashboard/dashboard', compact('title','data'));
+        return view('pages/dashboard/dashboard', compact('title','header','actionId','data'));
     }
 
-    /**
-     * Displays the analytics screen
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function analytics()
-    {
-        return view('pages/dashboard/analytics');
-    }
-
-    /**
-     * Displays the fintech screen
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function fintech()
-    {
-        return view('pages/dashboard/fintech');
-    }
+   
 }

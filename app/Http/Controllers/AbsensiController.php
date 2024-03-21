@@ -12,8 +12,11 @@ class AbsensiController extends Controller
      */
     public function index()
     {
-        $absensis = Absensi::all(); // Fetch all absensi records
-        return view('pages.absensi.index', compact('absensis')); 
+        $title = 'Absensi';
+        $actionId = '/absensi/{{$item->id_absensi}}';
+        $header = ['ID Pegawai','Nama Lengkap','Jenis Kelamin','Telepon','Kantor Cabang','Jabatan','Gaji','Foto'];
+        $data = Absensi::all();
+        return view('pages.absensi.index', compact('title','header','actionId','data')); 
     }
 
     /**

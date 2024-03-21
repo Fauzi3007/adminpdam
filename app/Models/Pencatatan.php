@@ -9,7 +9,7 @@ class Pencatatan extends Model
 {
     use HasFactory;
 
-    protected $table = 'pencatatan';
+    protected $table = 'pencatatans';
 
     protected $fillable = [
         'id_pelanggan',

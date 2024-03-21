@@ -33,7 +33,7 @@
    
 
           
-            <x-dashboard.table :tabletitle='$title' :tabledata='$data'/>
+            <x-dashboard.table :tabletitle='$title' :header='$header' :action='$actionId' :tabledata='$data'/>
 
            
 

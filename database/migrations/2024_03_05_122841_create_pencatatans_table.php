@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('meteran_lama');
             $table->integer('meteran_baru');
             $table->date('tanggal');
-            $table->string('foto_meteran', 2048);
+            $table->string('foto_meteran', 200);
             $table->foreignId('id_pegawai')->constrained(
                 table: 'pegawais', column:'id_pegawai',indexName: 'pegawaiCatatForeign'
             );

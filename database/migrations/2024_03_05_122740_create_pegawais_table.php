@@ -17,7 +17,7 @@ return new class extends Migration
             $table->char('jenis_kelamin', 1);
             $table->date('tgl_lahir');
             $table->string('telepon', 15);
-            $table->string('alamat', 300);
+            $table->string('alamat', 100);
             $table->string('status_nikah', 20);
             $table->integer('jumlah_anak');
             $table->foreignId('kantor_cabang')->constrained(
@@ -27,7 +27,7 @@ return new class extends Migration
                 table: 'jabatans',column:'id_jabatan' ,indexName: 'jabatanForeign'
             );
             $table->integer('gaji');
-            $table->string('foto', 2048);
+            $table->string('foto', 200);
             $table->foreignId('id_user')->constrained(
                 table: 'users', indexName: 'userForeign'
             );
