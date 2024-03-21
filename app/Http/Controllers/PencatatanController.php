@@ -12,8 +12,11 @@ class PencatatanController extends Controller
      */
     public function index()
     {
-        $pencatatans = Pencatatan::all();
-        return view('pages.pencatatan.index', compact('pencatatans'));
+        $title = 'Pencatatan';
+        $actionId = '/pencatatan/{{$item->id_pencatatan}}';
+        $header = ['ID Jabatan','Nama Jabatan','Tunjangan'];
+        $data = Pencatatan::all();
+        return view('pages.pencatatan.index', compact('title','header','actionId','data')); 
     }
 
     /**

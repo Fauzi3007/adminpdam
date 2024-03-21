@@ -12,8 +12,11 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        $pelanggans = Pelanggan::all(); 
-        return view('pages.pelanggan.index', compact('pelanggans'));
+        $title = 'Pelanggan';
+        $actionId = '/pelanggan/{{$item->id_pelanggan}}';
+        $header = ['ID Jabatan','Nama Jabatan','Tunjangan'];
+        $data = Pelanggan::all();
+        return view('pages.pelanggan.index', compact('title','header','actionId','data')); 
     }
 
     /**

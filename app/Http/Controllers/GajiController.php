@@ -12,8 +12,11 @@ class GajiController extends Controller
      */
     public function index()
     {
-        $gajis = Gaji::all();
-        return view('pages.gaji.index',compact('gajis'));
+        $title = 'Gaji';
+        $actionId = '/gaji/{{$item->id_gaji}}';
+        $header = ['ID Jabatan','Nama Jabatan','Tunjangan'];
+        $data = Gaji::all();
+        return view('pages.gaji.index', compact('title','header','actionId','data')); 
     }
 
     /**

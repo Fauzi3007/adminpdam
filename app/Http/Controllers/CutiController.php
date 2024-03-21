@@ -12,9 +12,11 @@ class CutiController extends Controller
      */
     public function index()
     {
-        $cutis = Cuti::all();
-
-        return view('pages.cuti.index',compact('cutis'));
+        $title = 'Cuti';
+        $actionId = '/cuti/{{$item->id_cuti}}';
+        $header = ['ID Pegawai','Nama Lengkap','Jenis Kelamin','Telepon','Kantor Cabang','Jabatan','Gaji','Foto'];
+        $data = Cuti::all();
+        return view('pages.cuti.index',compact('title','header','actionId','data'));
     }
 
     /**

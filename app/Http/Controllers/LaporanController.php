@@ -11,7 +11,11 @@ class LaporanController extends Controller
      */
     public function index()
     {
-        return view('pages.laporan.index');
+        $title = 'Laporan';
+        $actionId = '/laporan/{{$item->id_absensi}}';
+        $header = ['ID Pegawai','Nama Lengkap','Jenis Kelamin','Telepon','Kantor Cabang','Jabatan','Gaji','Foto'];
+        $data = [];
+        return view('pages.laporan.index', compact('title','header','actionId','data')); 
     }
 
     /**

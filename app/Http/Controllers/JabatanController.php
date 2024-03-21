@@ -13,9 +13,11 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $jabatans = Jabatan::all(); // Or apply filters/sorting as needed
-
-        return view('pages.jabatan.index', compact('jabatans'));
+        $title = 'Jabatan';
+        $actionId = '/jabatan/{{$item->id_jabatan}}';
+        $header = ['ID Jabatan','Nama Jabatan','Tunjangan'];
+        $data = Jabatan::all();
+        return view('pages.jabatan.index', compact('title','header','actionId','data')); 
     }
 
     /**

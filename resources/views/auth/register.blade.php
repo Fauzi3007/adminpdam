@@ -21,17 +21,12 @@
             </div>
         </div>
         <div class="flex items-center justify-between mt-6">
-            <div class="mr-1">
-                <label class="flex items-center" name="newsletter" id="newsletter">
-                    <input type="checkbox" class="form-checkbox" />
-                    <span class="text-sm ml-2">Email me about product news.</span>
-                </label>
-            </div>
+            
             <x-button>
                 {{ __('Sign Up') }}
             </x-button>                
         </div>
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+            {{-- @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-6">
                     <label class="flex items-start">
                         <input type="checkbox" class="form-checkbox mt-1" name="terms" id="terms" />
@@ -43,7 +38,7 @@
                         </span>
                     </label>
                 </div>
-            @endif        
+            @endif         --}}
     </form>
     <x-validation-errors class="mt-4" />  
     <!-- Footer -->
