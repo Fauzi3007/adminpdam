@@ -1,26 +1,44 @@
-<x-app-layout >
-  <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto " id="atas">
+<x-app-layout>
 
-    
-      <div class="flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h3">Entri Direktorat</h1>
-      </div>
-      <form method="post" action="/direktorat">
+  <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+      <form action="/gaji" method="post" class="grid grid-cols-2 gap-6 mt-2">
         @csrf
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
             
-            <input type="text" class="border form-input border-gray-300 rounded-md px-4 py-2"  name="id_direktorat" value="{{ old('id_direktorat',$id_direktorat)}}" hidden>
-           
-          
-          <div class="mb-2">
-            
-            <label for="nama_direktorat" class="form-label">Nama Direktorat</label>
-            <input type="text" placeholder="ex : PERBENDAHARAAN" class="border w-1/2 form-input uppercase border-gray-300 rounded-md px-4 py-2 ml-4 @error('nama_direktorat') is-invalid @enderror"  name="nama_direktorat" value="{{ old('nama_direktorat')}}">
-          
-          </div>
-          <x-jet-validation-errors class="mt-4" />  
-          
-          <button type="submit" class="mt-3 px-4 py-2 rounded-md bg-blue-500 text-white">Submit</button>
-        </form>
+              <x-label for="tanggal">{{ __('Tanggal') }} </x-label>
+              <x-input id="tanggal" type="date" name="tanggal" :value="old('tanggal')"
+                  required />
 
-    </div>
+              <x-label for="gaji_pokok">{{ __('Gaji Pokok') }} </x-label>
+              <x-input id="gaji_pokok" type="number" name="gaji_pokok" :value="old('gaji_pokok')" required />
+
+              <x-label for="tunjangan_jabatan">{{ __('Tunjangan Jabatan') }} </x-label>
+              <x-input id="tunjangan_jabatan" type="number" name="tunjangan_jabatan" :value="old('tunjangan_jabatan')" required />
+              
+              <x-label for="tunjangan_anak">{{ __('Tunjangan Anak') }} </x-label>
+              <x-input id="tunjangan_anak" type="number" name="tunjangan_anak" :value="old('tunjangan_anak')" required />
+          </div>
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              
+              <x-label for="tunjangan_nikah">{{ __('Tunjangan Nikah') }} </x-label>
+              <x-input id="tunjangan_nikah" type="number" name="tunjangan_nikah" :value="old('tunjangan_nikah')" required />
+             
+              <x-label for="potongan">{{ __('Potongan') }} </x-label>
+              <x-input id="potongan" type="text" name="potongan" :value="old('potongan')" required />
+             
+              <x-label for="pajak">{{ __('Pajak') }} </x-label>
+              <x-input id="pajak" type="text" name="pajak" :value="old('pajak')" required />
+              
+              <x-label for="total_gaji">{{ __('Total Gaji') }} </x-label>
+              <x-input id="total_gaji" type="text" name="total_gaji" :value="old('total_gaji')" required />
+          </div>
+
+          <div class="flex items-center justify-between mt-6 col-span-2">
+              <x-button type="submit">
+                  {{ __('Simpan') }}
+              </x-button>
+          </div>
+      </form>
+  </div>
+
 </x-app-layout>

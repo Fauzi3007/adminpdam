@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cutis', function (Blueprint $table) {
-            $table->id('id_cuti');
-            $table->foreignId('id_pegawai')->constrained(
+            $table->increments('id_cuti');
+            $table->unsignedInteger('id_pegawai')->constrained(
                 table: 'pegawais', column:'id_pegawai',indexName: 'pegawaiCutiForeign'
             );
             $table->date('tanggal_mulai');

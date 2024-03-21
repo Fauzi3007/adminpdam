@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pegawais', function (Blueprint $table) {
-            $table->id('id_pegawai');
+            $table->increments('id_pegawai');
             $table->string('nama_lengkap', 50);
             $table->char('jenis_kelamin', 1);
             $table->date('tgl_lahir');
@@ -20,15 +20,17 @@ return new class extends Migration
             $table->string('alamat', 100);
             $table->string('status_nikah', 20);
             $table->integer('jumlah_anak');
-            $table->foreignId('kantor_cabang')->constrained(
+            $table->unsignedInteger('kantor_cabang')->constrained(
                 table: 'cabangs', column:'id_cabang',indexName: 'cabangForeign'
             );
-            $table->foreignId('jabatan')->constrained(
+            $table->unsignedInteger('jabatan')->constrained(
                 table: 'jabatans',column:'id_jabatan' ,indexName: 'jabatanForeign'
             );
-            $table->integer('gaji');
-            $table->string('foto', 200);
-            $table->foreignId('id_user')->constrained(
+            $table->unsignedInteger('gaji')->constrained(
+                table: 'gajis',column:'id_gaji' ,indexName: 'gajiForeign'
+            );
+            $table->string('foto', 100);
+            $table->unsignedInteger('id_user')->constrained(
                 table: 'users', indexName: 'userForeign'
             );
             $table->timestamps();

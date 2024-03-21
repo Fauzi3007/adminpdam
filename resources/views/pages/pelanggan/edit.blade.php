@@ -1,22 +1,37 @@
-<x-app-layout >
-  <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto " id="atas">
+<x-app-layout>
 
-   
-      <p class="h3">Edit data Direktorat</p>
-      <form method="post" action="/direktorat/{{ $direktorats->id_direktorat }}">
-          @method('PUT')
-          @csrf
-          <input type="text" class="border form-input  border-gray-300 rounded-md px-4 py-2"  name="id_direktorat" value="{{ old('id_direktorat',$direktorats->id_direktorat)}}" hidden>
-          <div class="mt-2">
-      
-            <label for="nama_direktorat" class="form-control">Nama direktorat</label>
-            <input type="text"  class="border form-input w-1/2 uppercase border-gray-300 rounded-md px-4 py-2 ml-4 @error('nama_direktorat') is-invalid @enderror" name="nama_direktorat" value="{{ old('nama_direktorat',$direktorats->nama_direktorat)}}">
-          
+  <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+      <form action="/pelanggan" method="post" class="grid grid-cols-2 gap-6 mt-2">
+        @method('PUT')
+        @csrf
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+
+              <x-label for="nomor_pelanggan">{{ __('Nomor Pelanggan') }} </x-label>
+              <x-input id="nomor_pelanggan" type="text" name="nomor_pelanggan" :value="old('nomor_pelanggan')" required />
+
+              <x-label for="nama_pelanggan">{{ __('Nama Pelanggan') }} </x-label>
+              <x-input id="nama_pelanggan" type="text" name="nama_pelanggan" :value="old('nama_pelanggan')" required />
+             
+              <x-label for="alamat">{{ __('Alamat') }} </x-label>
+              <x-input id="alamat" type="text" name="alamat" :value="old('alamat')" required />
+
+              <x-label for="latitude">{{ __('Latitude') }} </x-label>
+              <x-input id="latitude" type="number" name="latitude" :value="old('latitude')" required />
+             
+              <x-label for="longitude">{{ __('Longitude') }} </x-label>
+              <x-input id="longitude" type="number" name="longitude" :value="old('longitude')" required />
+
+              <x-label for="lingkup_cabang">{{ __('Lingkup Cabang') }} </x-label>
+              <x-input id="lingkup_cabang" type="text" name="lingkup_cabang" :value="old('lingkup_cabang')" required />
+            
           </div>
-          <x-jet-validation-errors class="mt-4" />  
 
-            <button type="submit" class="mt-3 px-4 py-2 rounded-md bg-blue-500 text-white">Update</button>
-        </form>
-      </div>
-    
-    </x-app-layout>
+          <div class="flex items-center justify-between mt-6 col-span-2">
+              <x-button type="submit">
+                  {{ __('Simpan') }}
+              </x-button>
+          </div>
+      </form>
+  </div>
+
+</x-app-layout>

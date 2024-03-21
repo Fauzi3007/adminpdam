@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-        <form action="/absensi" method="post" class="grid grid-cols-2 gap-6 mt-2">
+        <form action="/pegawai" method="post" class="grid grid-cols-2 gap-6 mt-2">
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <x-label for="id_user">{{ __('ID User') }} </x-label>
                 <x-input id="id_user" type="text" name="id_user" disabled :value="old('id_user')" required />

@@ -1,21 +1,34 @@
-<x-app-layout >
-  <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto " id="atas">
+<x-app-layout>
 
-   
-      <p class="h3">Edit data Direktorat</p>
-      <form method="post" action="/direktorat/{{ $direktorats->id_direktorat }}">
-          @method('PUT')
-          @csrf
-          <input type="text" class="border form-input  border-gray-300 rounded-md px-4 py-2"  name="id_direktorat" value="{{ old('id_direktorat',$direktorats->id_direktorat)}}" hidden>
-          <div class="mt-2">
-      
-            <label for="nama_direktorat" class="form-control">Nama direktorat</label>
-            <input type="text"  class="border form-input w-1/2 uppercase border-gray-300 rounded-md px-4 py-2 ml-4 @error('nama_direktorat') is-invalid @enderror" name="nama_direktorat" value="{{ old('nama_direktorat',$direktorats->nama_direktorat)}}">
-          
+  <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+      <form action="/cuti" method="post" class="grid grid-cols-2 gap-6 mt-2">
+        @method('PUT')
+        @csrf
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+
+              <x-label for="cabang">{{ __('Nama Cabang') }} </x-label>
+              <x-input id="cabang" type="number" name="cabang" :value="old('cabang')"
+                  required />
+
+              <x-label for="tanggal_mulai">{{ __('Tanggal Mulai') }} </x-label>
+              <x-input id="tanggal_mulai" type="date" name="tanggal_mulai" :value="old('tanggal_mulai')" required />
+
+              <x-label for="tanggal_selesai">{{ __('Tanggal Selesai') }} </x-label>
+              <x-input id="tanggal_selesai" type="date" name="tanggal_selesai" :value="old('tanggal_selesai')" required />
+              
+              <x-label for="keterangan">{{ __('Keterangan') }} </x-label>
+              <x-input id="keterangan" type="text" name="keterangan" :value="old('keterangan')" required />
+              
+              <x-label for="status">{{ __('Status') }} </x-label>
+              <x-input id="status" type="text" name="status" :value="old('status')" required />
           </div>
 
-            <button type="submit" class="mt-3 px-4 py-2 rounded-md bg-blue-500 text-white">Update</button>
-        </form>
-      </div>
-    
-    </x-app-layout>
+          <div class="flex items-center justify-between mt-6 col-span-2">
+              <x-button type="submit">
+                  {{ __('Simpan') }}
+              </x-button>
+          </div>
+      </form>
+  </div>
+
+</x-app-layout>

@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pencatatans', function (Blueprint $table) {
-            $table->id('id_pencatatan');
-            $table->foreignId('id_pelanggan')->constrained(
+            $table->increments('id_pencatatan');
+            $table->unsignedInteger('id_pelanggan')->constrained(
                 table: 'pelanggans', column:'id_pelanggan',indexName: 'pelangganForeign'
             );
-            $table->integer('meteran_lama');
-            $table->integer('meteran_baru');
+            $table->unsignedInteger('meteran_lama');
+            $table->unsignedInteger('meteran_baru');
             $table->date('tanggal');
-            $table->string('foto_meteran', 200);
-            $table->foreignId('id_pegawai')->constrained(
+            $table->string('foto_meteran', 100);
+            $table->unsignedInteger('id_pegawai')->constrained(
                 table: 'pegawais', column:'id_pegawai',indexName: 'pegawaiCatatForeign'
             );
 

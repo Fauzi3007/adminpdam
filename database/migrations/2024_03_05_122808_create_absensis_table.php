@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('absensis', function (Blueprint $table) {
-            $table->id('id_absen');
+            $table->increments('id_absen');
             $table->date('tanggal');
             $table->timestamp('waktu_masuk');
             $table->timestamp('waktu_keluar')->nullable();
             $table->string('status', 20);
             $table->enum('keterangan', ['Masuk', 'Izin', 'Sakit', 'Cuti']);
-            $table->foreignId('id_pegawai')->constrained(
+            $table->unsignedInteger('id_pegawai')->constrained(
                 table: 'pegawais', column:'id_pegawai',indexName: 'pegawaiForeign'
             );
             $table->timestamps();

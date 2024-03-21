@@ -15,7 +15,6 @@ class Cabang extends Model
 
     protected $fillable = [
         'nama_cabang',
-        'kepala_cabang',
         'latitude_cabang',
         'longitude_cabang',
     ];

@@ -12,8 +12,11 @@ class CabangController extends Controller
      */
     public function index()
     {
-        $cabangs = Cabang::all();
-        return view('pages.cabang.index',compact('cabangs'));
+        $title = 'Cabang';
+        $actionId = '/cabang/{{$item->id_absensi}}';
+        $header = ['ID Pegawai','Nama Lengkap','Jenis Kelamin','Telepon','Kantor Cabang','Jabatan','Gaji','Foto'];
+        $data = Cabang::all();
+        return view('pages.cabang.index', compact('title','header','actionId','data')); 
     }
 
     /**

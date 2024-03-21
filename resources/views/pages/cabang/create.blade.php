@@ -1,20 +1,27 @@
-<x-app-layout >
-  <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto " id="atas">
+<x-app-layout>
 
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Entri Satker</h1>
-      </div>
-      <form method="post" action="/satker">
-          @csrf
-          <input type="text" class="border form-input border-gray-300 rounded-md px-4 py-2"  name="id_satker" value="{{ old('id_satker',$id_satker)}}" hidden>
-          <div class="mt-2">
-      
-            <label for="nama_satker" class="form-label">Nama Satker</label>
-            <input type="text"  placeholder="ex : PROVINSI JAWA TENGAH" class=" border w-1/2 form-input uppercase border-gray-300 rounded-md px-4 py-2  @error('nama_satker') is-invalid @enderror" name="nama_satker" value="{{ old('nama_satker')}}">
-           
+  <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+      <form action="/cabang" method="post" class="grid grid-cols-2 gap-6 mt-2">
+        @csrf
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+
+              <x-label for="cabang">{{ __('Nama Cabang') }} </x-label>
+              <x-input id="cabang" type="number" name="cabang" :value="old('cabang')"
+                  required />
+
+              <x-label for="latitude_cabang">{{ __('Latitude Cabang') }} </x-label>
+              <x-input id="latitude_cabang" type="text" name="latitude_cabang" :value="old('latitude_cabang')" required />
+
+              <x-label for="longitude_cabang">{{ __('Longitude Cabang') }} </x-label>
+              <x-input id="longitude_cabang" type="text" name="longitude_cabang" :value="old('longitude_cabang')" required />
           </div>
 
-            <button type="submit" class="mt-3 px-4 py-2 rounded-md bg-blue-500 text-white">Submit</button>
-        </form>
-  </div>  
+          <div class="flex items-center justify-between mt-6 col-span-2">
+              <x-button type="submit">
+                  {{ __('Simpan') }}
+              </x-button>
+          </div>
+      </form>
+  </div>
+
 </x-app-layout>
