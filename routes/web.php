@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Fortify\UpdateUserPassword;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\CutiController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PencatatanController;
+use App\Http\Controllers\PenggunaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,15 +31,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('/absensi', AbsensiController::class, ['names' => 'absensi']);
-    Route::resource('/cabang', CabangController::class, ['names' => 'cabang']);
-    Route::resource('/cuti', CutiController::class, ['names' => 'cuti']);
-    Route::resource('/gaji', GajiController::class, ['names' => 'gaji']);
-    Route::resource('/jabatan', JabatanController::class, ['names' => 'jabatan']);
-    Route::resource('/laporan', LaporanController::class, ['names' => 'laporan']);
-    Route::resource('/pegawai', PegawaiController::class, ['names' => 'pegawai']);
-    Route::resource('/pelanggan', PelangganController::class, ['names' => 'pelanggan']);
-    Route::resource('/pencatatan', PencatatanController::class, ['names' => 'pencatatan']);
+    Route::resource('/absensi', AbsensiController::class);
+    Route::resource('/cabang', CabangController::class);
+    Route::resource('/cuti', CutiController::class);
+    Route::resource('/gaji', GajiController::class);
+    Route::resource('/jabatan', JabatanController::class);
+    Route::resource('/laporan', LaporanController::class);
+    Route::resource('/pegawai', PegawaiController::class);
+    Route::resource('/pelanggan', PelangganController::class);
+    Route::resource('/pencatatan', PencatatanController::class);
+    Route::resource('/user', PenggunaController::class);
 
     Route::fallback(function() {
         return view('pages/utility/404');

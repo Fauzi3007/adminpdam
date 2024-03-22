@@ -26,9 +26,6 @@ return new class extends Migration
             $table->unsignedInteger('jabatan')->constrained(
                 table: 'jabatans',column:'id_jabatan' ,indexName: 'jabatanForeign'
             );
-            $table->unsignedInteger('gaji')->constrained(
-                table: 'gajis',column:'id_gaji' ,indexName: 'gajiForeign'
-            );
             $table->string('foto', 100);
             $table->unsignedInteger('id_user')->constrained(
                 table: 'users', indexName: 'userForeign'

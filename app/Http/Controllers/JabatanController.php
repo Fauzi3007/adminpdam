@@ -14,8 +14,8 @@ class JabatanController extends Controller
     public function index()
     {
         $title = 'Jabatan';
-        $actionId = '/jabatan/{{$item->id_jabatan}}';
-        $header = ['ID Jabatan','Nama Jabatan','Tunjangan'];
+        $actionId = 'jabatan';
+        $header = ['nama_jabatan','tunjangan_jabatan'];
         $data = Jabatan::all();
         return view('pages.jabatan.index', compact('title','header','actionId','data')); 
     }
@@ -35,12 +35,12 @@ class JabatanController extends Controller
     {
         $request->validate([
             'nama_jabatan' => 'required|string|max:30',
-            'tunjangan_jabatan' => 'required|decimal',
+            'tunjangan_jabatan' => 'required|numeric',
         ]);
 
         Jabatan::create($request->all());
 
-        return redirect()->route('pages.jabatan.index')->with('success', 'Jabatan created successfully!');
+        return redirect('/jabatan')->with('success', 'Jabatan created successfully!');
     }
 
     /**
@@ -90,7 +90,7 @@ class JabatanController extends Controller
 
         $jabatans->update($request->all()); 
 
-        return redirect()->route('pages.jabatan.index')->with('success', 'Jabatan updated successfully!');
+        return redirect('/jabatan')->with('success', 'Jabatan updated successfully!');
     }
 
     /**
@@ -106,7 +106,6 @@ class JabatanController extends Controller
 
         $jabatans->delete();
 
-        return redirect()->route('pages.jabatan.index')
-                        ->with('success', 'Jabatan deleted successfully!');
+        return redirect('/jabatan')->with('success', 'Jabatan deleted successfully!');
     }
 }

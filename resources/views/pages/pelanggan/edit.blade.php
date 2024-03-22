@@ -7,7 +7,7 @@
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
 
               <x-label for="nomor_pelanggan">{{ __('Nomor Pelanggan') }} </x-label>
-              <x-input id="nomor_pelanggan" type="text" name="nomor_pelanggan" :value="old('nomor_pelanggan')" required />
+              <x-input id="nomor_pelanggan" type="text" maxlength="16" name="nomor_pelanggan" :value="old('nomor_pelanggan')" required />
 
               <x-label for="nama_pelanggan">{{ __('Nama Pelanggan') }} </x-label>
               <x-input id="nama_pelanggan" type="text" name="nama_pelanggan" :value="old('nama_pelanggan')" required />

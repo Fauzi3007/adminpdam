@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
+use App\Models\Gaji;
+use App\Models\Jabatan;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -14,11 +17,11 @@ class PegawaiController extends Controller
     public function index()
     {
         $title = 'Pegawai';
-        $actionId = '/pegawai/{{$item->id_pegawai}}';
-        $header = ['ID Pegawai','Nama Lengkap','Jenis Kelamin','Telepon','Kantor Cabang','Jabatan','Gaji','Foto'];
+        $actionId = 'pegawai';
+        $header = ['nama_lengkap', 'jenis_kelamin', 'telepon', 'alamat', 'kantor_cabang', 'jabatan', 'gaji'];
         $data = Pegawai::all();
          
-        return view('pages.pegawai.index', compact('title','header','actionId','data'));
+        return view('pages.pegawai.index', compact('title', 'header', 'actionId', 'data'));
     }
 
     /**
@@ -26,7 +29,10 @@ class PegawaiController extends Controller
      */
     public function create()
     {
-        return view('pages.pegawai.create');
+        $cabangs = Cabang::all();
+        $jabatans = Jabatan::all();
+        $gajis = Gaji::all();   
+        return view('pages.pegawai.create', compact('cabangs', 'jabatans', 'gajis'));
     }
 
     /**
@@ -34,73 +40,28 @@ class PegawaiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_lengkap' => 'required|string|max:100',
-            'jenis_kelamin' => 'required|string|in:Laki-laki,Perempuan',
-            'tgl_lahir' => 'required|date',
-            'telepon' => 'required|string:max:15',
-            'alamat' => 'required|string',
-            'status_nikah' => 'required|string',
-            'jumlah_anak' => 'required|integer',
-            'kantor_cabang' => 'required|integer|exists:cabangs,id_cabang',
-            'jabatan' => 'required|integer|exists:jabatans,id_jabatan',
-            'gaji' => 'required|integer|exists:gajis,id_gaji',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'id_user' => 'required|integer|exists:users,id_user',
-        ]);
+        $this->validatePegawai($request);
 
-        $pegawai = new Pegawai();
-        $pegawai->nama_lengkap = $request->nama_lengkap;
-        $pegawai->jenis_kelamin = $request->jenis_kelamin;
-        $pegawai->tgl_lahir = $request->tgl_lahir;
-        $pegawai->telepon = $request->telepon;
-        $pegawai->alamat = $request->alamat;
-        $pegawai->status_nikah = $request->status_nikah;
-        $pegawai->jumlah_anak = $request->jumlah_anak;
-        $pegawai->kantor_cabang = $request->kantor_cabang;
-        $pegawai->jabatan = $request->jabatan;
-        $pegawai->gaji = $request->gaji;
-        $pegawai->id_user = $request->id_user;
+        Pegawai::create($request->all());
+        // $this->handleFileUpload($request, $pegawai);
 
-        if ($request->hasFile('foto')) {
-            $image = $request->file('foto');
-            $name = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $name);
-            $pegawai->foto = $name;
-        }
 
-        $pegawai->save();
-
-        return redirect()->route('pages.pegawai.index')
-                        ->with('success', 'Pegawai created successfully!');
+        return redirect('/pegawai')->with('success', 'Pegawai created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Pegawai $pegawai)
     {
-        $pegawai = Pegawai::find($id);
-
-        if (!$pegawai) {
-            return abort(404);
-        }
-
         return view('pages.pegawai.show', compact('pegawai'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Pegawai $pegawai)
     {
-        $pegawai = Pegawai::find($id);
-
-        if (!$pegawai) {
-            return abort(404);
-        }
-
         return view('pages.pegawai.edit', compact('pegawai'));
     }
 
@@ -109,51 +70,19 @@ class PegawaiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'nama_lengkap' => 'required|string|max:100',
-            'jenis_kelamin' => 'required|string|in:Laki-laki,Perempuan',
-            'tgl_lahir' => 'required|date',
-            'telepon' => 'required|string:max:15',
-            'alamat' => 'required|string',
-            'status_nikah' => 'required|string',
-            'jumlah_anak' => 'required|integer',
-            'kantor_cabang' => 'required|integer|exists:cabangs,id_cabang',
-            'jabatan' => 'required|integer|exists:jabatans,id_jabatan',
-            'gaji' => 'required|integer|exists:gajis,id_gaji',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'id_user' => 'required|integer|exists:users,id_user',
-        ]);
+        $this->validatePegawai($request);
 
-        $pegawai = Pegawai::find($id);
+        $pegawais = Pegawai::find($id); 
 
-        if (!$pegawai) {
-            return abort(404);
+        if (!$pegawais) {
+            return abort(404); 
         }
 
-        $pegawai->nama_lengkap = $request->nama_lengkap;
-        $pegawai->jenis_kelamin = $request->jenis_kelamin;
-        $pegawai->tgl_lahir = $request->tgl_lahir;
-        $pegawai->telepon = $request->telepon;
-        $pegawai->alamat = $request->alamat;
-        $pegawai->status_nikah = $request->status_nikah;
-        $pegawai->jumlah_anak = $request->jumlah_anak;
-        $pegawai->kantor_cabang = $request->kantor_cabang;
-        $pegawai->jabatan = $request->jabatan;
-        $pegawai->gaji = $request->gaji;
-        $pegawai->id_user = $request->id_user;
-        
-        if ($request->hasFile('foto')) {
-            $image = $request->file('foto');
-            $name = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $name);
-            $pegawai->foto = $name;
-        }
+        // $this->handleFileUpload($request, $pegawai);
+        $pegawais->update($request->all());
 
-        $pegawai->save();
+        return redirect('/pegawai')->with('success', 'Pelanggan updated successfully!');
 
-        return redirect()->route('pages.pegawai.index')
-                        ->with('success', 'Pegawai updated successfully!');
     }
 
     /**
@@ -161,14 +90,48 @@ class PegawaiController extends Controller
      */
     public function destroy(string $id)
     {
-        $pegawai = Pegawai::find($id);
+        $pegawais = pegawai::find($id); 
 
-        if (!$pegawai) {
-            return abort(404);
+        if (!$pegawais) {
+            return abort(404); 
         }
 
-        $pegawai->delete();
-        return redirect()->route('pages.pegawai.index')
-                        ->with('success', 'Pegawai deleted successfully!');
+        $pegawais->delete();
+
+        return redirect('/pegawai')->with('success', 'Pegawai deleted successfully!');
     }
+
+    /**
+     * Validate the request data for Pegawai.
+     */
+    protected function validatePegawai(Request $request)
+    {
+        return $request->validate([
+            'id_user' => 'required|integer|exists:users,id_user',
+            'nama_lengkap' => 'required|string|max:50',
+            'jenis_kelamin' => 'required|string|in:L,P',
+            'tgl_lahir' => 'required|date',
+            'telepon' => 'required|string|max:15',
+            'alamat' => 'required|string',
+            'status_nikah' => 'required|string',
+            'jumlah_anak' => 'required|integer',
+            'kantor_cabang' => 'required|integer|exists:cabangs,id_cabang',
+            'jabatan' => 'required|integer|exists:jabatans,id_jabatan',
+            'foto' => 'nullable|string|max:100',
+        ]);
+    }
+
+    /**
+     * Handle file upload for Pegawai.
+     */
+    // protected function handleFileUpload(Request $request, Pegawai $pegawai)
+    // {
+    //     if ($request->hasFile('foto')) {
+    //         $image = $request->file('foto');
+    //         $name = time() . '.' . $image->getClientOriginalExtension();
+    //         $destinationPath = public_path('/images');
+    //         $image->move($destinationPath, $name);
+    //         $pegawai->foto = $name;
+    //     }
+    // }
 }

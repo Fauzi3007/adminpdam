@@ -13,8 +13,8 @@ class GajiController extends Controller
     public function index()
     {
         $title = 'Gaji';
-        $actionId = '/gaji/{{$item->id_gaji}}';
-        $header = ['ID Jabatan','Nama Jabatan','Tunjangan'];
+        $actionId = 'gaji';
+        $header = ['tanggal','gaji_pokok','tunjangan_jabatan','tunjangan_anak','tunjangan_nikah','potongan','pajak','total_gaji'];
         $data = Gaji::all();
         return view('pages.gaji.index', compact('title','header','actionId','data')); 
     }
@@ -34,19 +34,18 @@ class GajiController extends Controller
     {
         $request->validate([
             'tanggal' => 'required|date',
-            'gaji_pokok' => 'required|decimal',
-            'tunjangan_jabatan' => 'required|decimal',
-            'tunjangan_anak' => 'required|decimal',
-            'tunjangan_nikah' => 'required|decimal',
-            'potongan' => 'required|decimal',
-            'pajak' => 'required|decimal',
-            'total_gaji' => 'required|decimal',
+            'gaji_pokok' => 'required|numeric',
+            'tunjangan_jabatan' => 'required|numeric',
+            'tunjangan_anak' => 'required|numeric',
+            'tunjangan_nikah' => 'required|numeric',
+            'potongan' => 'required|numeric',
+            'pajak' => 'required|numeric',
+            'total_gaji' => 'required|numeric',
         ]);
 
         $gajis = Gaji::create($request->all());
 
-        return redirect()->route('pages.gaji.index')
-                        ->with('success', 'Gaji created successfully!');
+        return redirect('/gaji')->with('success', 'Gaji created successfully!');
     }
 
     /**
@@ -99,8 +98,7 @@ class GajiController extends Controller
         }
         $gajis->update($request->all());
 
-        return redirect()->route('pages.gaji.index')
-                        ->with('success', 'Gaji updated successfully!');
+        return redirect('/gaji')->with('success', 'Gaji updated successfully!');
     }
 
     /**
@@ -115,7 +113,6 @@ class GajiController extends Controller
         }
 
         $gajis->delete();
-        return redirect()->route('pages.gaji.index')
-                        ->with('success', 'Gaji deleted successfully!');
+        return redirect('/gaji')->with('success', 'Gaji deleted successfully!');
     }
 }

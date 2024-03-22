@@ -13,8 +13,8 @@ class PencatatanController extends Controller
     public function index()
     {
         $title = 'Pencatatan';
-        $actionId = '/pencatatan/{{$item->id_pencatatan}}';
-        $header = ['ID Jabatan','Nama Jabatan','Tunjangan'];
+        $actionId = 'pencatatan';
+        $header = ['id_pelanggan','meteran_lama','meteran_baru','tanggal','foto_meteran','id_pegawai'];
         $data = Pencatatan::all();
         return view('pages.pencatatan.index', compact('title','header','actionId','data')); 
     }
@@ -58,8 +58,7 @@ class PencatatanController extends Controller
 
         $pencatatan->save();
 
-        return redirect()->route('pages.pencatatan.index')
-                        ->with('success', 'Pencatatan updated successfully!');
+        return redirect('/pencatatan')->with('success', 'Pencatatan updated successfully!');
         
         
     }
@@ -122,8 +121,7 @@ class PencatatanController extends Controller
 
         $pencatatan->update($request->all());
 
-        return redirect()->route('pages.pencatatan.index')
-                        ->with('success', 'Pencatatan updated successfully!');
+        return redirect('/pencatatan')->with('success', 'Pencatatan updated successfully!');
     }
 
     /**
@@ -139,7 +137,6 @@ class PencatatanController extends Controller
 
         $pencatatan->delete();
 
-        return redirect()->route('pages.pencatatan.index')
-                        ->with('success', 'Pencatatan deleted successfully!');
+        return redirect('/pencatatan')->with('success', 'Pencatatan deleted successfully!');
     }
 }

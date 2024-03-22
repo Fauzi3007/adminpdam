@@ -9,7 +9,7 @@
       <div class="gap-6 mt-2">
 
         <form action="/absensi" method="post">
-      
+            @csrf
             <div>
                 <x-label for="tanggal">{{ __('Tanggal') }}</x-label>
                 <x-input id="tanggal" type="date" name="tanggal" :value="old('tanggal')" required />

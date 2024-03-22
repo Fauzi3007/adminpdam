@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('gajis', function (Blueprint $table) {
             $table->increments('id_gaji');
-            $table->decimal('gaji_pokok', 5, 2);
-            $table->decimal('tunjangan_jabatan', 5, 2);
-            $table->decimal('tunjangan_anak', 5, 2);
-            $table->decimal('tunjangan_nikah', 5, 2);
-            $table->decimal('potongan', 5, 2);
-            $table->decimal('pajak', 5, 2);
-            $table->decimal('total_gaji', 5, 2);
+            $table->unsignedInteger('id_pegawai')->constrained(
+                table: 'pegawais', column:'id_pegawai',indexName: 'GajiPegawaiForeign'
+            );
+            $table->decimal('gaji_pokok', 10, 2);
+            $table->decimal('tunjangan_jabatan', 10, 2);
+            $table->decimal('tunjangan_anak', 10, 2);
+            $table->decimal('tunjangan_nikah', 10, 2);
+            $table->decimal('potongan', 10, 2);
+            $table->decimal('pajak', 10, 2);
+            $table->decimal('total_gaji', 10, 2);
             $table->date('tanggal');
             $table->timestamps();
         });

@@ -13,8 +13,8 @@ class CutiController extends Controller
     public function index()
     {
         $title = 'Cuti';
-        $actionId = '/cuti/{{$item->id_cuti}}';
-        $header = ['ID Pegawai','Tanggal Mulai','Tanggal Selesai','Keterangan','Status'];
+        $actionId = 'cuti';
+        $header = ['id_pegawai','tanggal_mulai','tanggal_selesai','keterangan','status'];
         $data = Cuti::all();
         return view('pages.cuti.index',compact('title','header','actionId','data'));
     }
@@ -42,8 +42,7 @@ class CutiController extends Controller
 
         $cutis = Cuti::create($request->all());
 
-        return redirect()->route('pages.cuti.index')
-                        ->with('success', 'Cuti created successfully!');
+        return redirect('/cuti')->with('success', 'Cuti created successfully!');
     }
 
     /**
@@ -95,8 +94,7 @@ class CutiController extends Controller
 
         $cutis->update($request->all());
 
-        return redirect()->route('pages.cuti.index')
-                        ->with('success', 'Cuti updated successfully!');
+        return redirect('/cuti')->with('success', 'Cuti updated successfully!');
     }
 
     /**
@@ -111,7 +109,6 @@ class CutiController extends Controller
         }
 
         $cutis->delete();
-        return redirect()->route('pages.cuti.index')
-                        ->with('success', 'Cuti deleted successfully!');
+        return redirect('/cuti')->with('success', 'Cuti deleted successfully!');
     }
 }

@@ -13,8 +13,8 @@ class PelangganController extends Controller
     public function index()
     {
         $title = 'Pelanggan';
-        $actionId = '/pelanggan/{{$item->id_pelanggan}}';
-        $header = ['ID Jabatan','Nama Jabatan','Tunjangan'];
+        $actionId = 'pelanggan';
+        $header = ['nomor_pelanggan','nama_pelanggan','alamat','latitude','longitude','lingkup_cabang'];
         $data = Pelanggan::all();
         return view('pages.pelanggan.index', compact('title','header','actionId','data')); 
     }
@@ -32,8 +32,8 @@ class PelangganController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nomor_pelanggan' => 'required|string|max:20',
+        $validated = $request->validate([
+            'nomor_pelanggan' => 'required|string|max:16',
             'nama_pelanggan' => 'required|string|max:50',
             'alamat' => 'required|string|max:300',
             'latitude' => 'required|numeric',
@@ -42,10 +42,9 @@ class PelangganController extends Controller
         ]);
         
         
-        $pelanggans = Pelanggan::create($request->all()); 
+        Pelanggan::create($validated); 
 
-        return redirect()->route('pages.pelanggan.index')
-                        ->with('success', 'Pelanggan created successfully!');
+        return redirect('/pelanggan')->with('success', 'Pelanggan created successfully!');
     }
 
     /**
@@ -81,7 +80,7 @@ class PelangganController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
+       $validated =  $request->validate([
             'nomor_pelanggan' => 'required|string|max:20',
             'nama_pelanggan' => 'required|string|max:50',
             'alamat' => 'required|string|max:300',
@@ -96,10 +95,9 @@ class PelangganController extends Controller
             return abort(404); 
         }
 
-        $pelanggan->update($request->all());
+        $pelanggan->update($validated);
 
-        return redirect()->route('pages.pelanggan.index')
-                        ->with('success', 'Pelanggan updated successfully!');
+        return redirect('/pelanggan')->with('success', 'Pelanggan updated successfully!');
     }
 
     /**
@@ -115,7 +113,6 @@ class PelangganController extends Controller
 
         $pelanggan->delete();
 
-        return redirect()->route('pages.pelanggan.index')
-                        ->with('success', 'Pelanggan deleted successfully!');
+        return redirect('/pelanggan')->with('success', 'Pelanggan deleted successfully!');
     }
 }

@@ -13,8 +13,8 @@ class CabangController extends Controller
     public function index()
     {
         $title = 'Cabang';
-        $actionId = '/cabang/{{$item->id_absensi}}';
-        $header = ['ID Pegawai','Nama Lengkap','Jenis Kelamin','Telepon','Kantor Cabang','Jabatan','Gaji','Foto'];
+        $actionId = 'cabang';
+        $header = ['nama_cabang','latitude_cabang','longitude_cabang'];
         $data = Cabang::all();
         return view('pages.cabang.index', compact('title','header','actionId','data')); 
     }
@@ -32,16 +32,15 @@ class CabangController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_cabang' => 'required|string|max:100',
-            'latitude_cabang' => 'required|double',
-            'longitude_cabang' => 'required|double',
+       $validated = $request->validate([
+            'nama_cabang' => 'required|string|max:50',
+            'latitude_cabang' => 'required|string|max:20',
+            'longitude_cabang' => 'required|string|max:20',
         ]);
 
-        $cabangs = Cabang::create($request->all());
+        Cabang::create($validated);
 
-        return redirect()->route('pages.cabang.index')
-                        ->with('success', 'Cabang created successfully!');
+        return redirect('/cabang')->with('success', 'Cabang created successfully!');
     }
 
     /**
@@ -70,20 +69,19 @@ class CabangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama_cabang' => 'required|string|max:100',
-            'latitude_cabang' => 'required|double',
-            'longitude_cabang' => 'required|double',
+            'latitude_cabang' => 'required|string|max:20',
+            'longitude_cabang' => 'required|string|max:20',
         ]);
 
         $cabangs = Cabang::find($id);
         if (!$cabangs) {
             return abort(404);
         }
-        $cabangs->update($request->all());
+        $cabangs->update($validated);
 
-        return redirect()->route('pages.cabang.index')
-                        ->with('success', 'Cabang updated successfully!');
+        return redirect('/cabang')->with('success', 'Cabang updated successfully!');
     }
 
     /**
@@ -96,7 +94,6 @@ class CabangController extends Controller
             return abort(404);
         }
         $cabangs->delete();
-        return redirect()->route('pages.cabang.index')
-                        ->with('success', 'Cabang deleted successfully!');
+        return redirect('/cabang')->with('success', 'Cabang deleted successfully!');
     }
 }

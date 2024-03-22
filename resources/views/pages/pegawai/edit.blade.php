@@ -6,8 +6,8 @@
           @csrf
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <x-label for="id_user">{{ __('ID User') }} </x-label>
-              <x-input id="id_user" type="text" name="id_user" disabled :value="old('id_user')" required />
-             
+              <x-input id="id_user" type="text" name="id_user" :value="{{ Auth::user()->name }}" required />
+                
               <x-label for="nama_lengkap">{{ __('Nama Lengkap') }}</x-label>
               <x-input id="nama_lengkap" type="text" name="nama_lengkap" :value="old('nama_lengkap')"
                   required />
@@ -29,25 +29,38 @@
 
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <x-label for="status_nikah">{{ __('Status Nikah') }} </x-label>
-              <x-input id="status_nikah" type="text" name="status_nikah" :value="old('status_nikah')"
-                  required />
+              <select name="status_nikah" id="status_nikah" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <option value="Belum Menikah" {{ old('status_nikah') === 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
+                <option value="Menikah" {{ old('status_nikah') === 'Menikah' ? 'selected' : '' }}>Menikah</option>
+                <option value="Cerai" {{ old('status_nikah') === 'Cerai' ? 'selected' : '' }}>Cerai</option>
+            </select>   
 
               <x-label for="jumlah_anak">{{ __('Jumlah Anak') }} </x-label>
               <x-input id="jumlah_anak" type="number" name="jumlah_anak" :value="old('jumlah_anak')"
                   required />
 
-              <x-label for="kantor_cabang">{{ __('Kantor Cabang') }} </x-label>
-              <x-input id="kantor_cabang" type="number" name="kantor_cabang" :value="old('kantor_cabang')"
-                  required />
-
-              <x-label for="jabatan">{{ __('Jabatan') }} </x-label>
-              <x-input id="jabatan" type="number" name="jabatan" :value="old('jabatan')" required />
+                  <x-label for="kantor_cabang">{{ __('Kantor Cabang') }} </x-label>
+                  <select name="kantor_cabang" id="kantor_cabang" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      @foreach ($cabangs as $item)
+                          <option value="{{ $item->id_cabang }}"  {{ $cabangs->id_cabang === {{ $item->id_cabang }} ? 'selected' : '' }}>{{ $item->nama_cabang }}</option>
+                      @endforeach
+                  </select>
+  
+                  <x-label for="jabatan">{{ __('Jabatan') }} </x-label>
+                  <select name="jabatan" id="jabatan" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      @foreach ($jabatans as $item)
+                          <option value="{{ $item->id_jabatan }}"  {{ $jabatans->id_jabatan === {{ $item->id_jabatan }} ? 'selected' : '' }}>{{ $item->nama_jabatan }}</option>
+                      @endforeach
+                  </select>
 
               <x-label for="gaji">{{ __('Gaji') }} </x-label>
-              <x-input id="gaji" type="number" name="gaji" :value="old('gaji')" required />
-
+              <select name="gaji" id="gaji" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                @foreach ($gajis as $item)
+                    <option value="{{ $item->id_gaji }}"  {{ $gajis->id_gaji === {{ $item->id_gaji }} ? 'selected' : '' }}>{{ $item->total_gaji}}</option>
+                @endforeach
+            </select>
               <x-label for="foto">{{ __('Foto') }} </x-label>
-              <x-input id="foto" type="file" name="foto" :value="old('foto')" required />
+              <x-input id="foto" type="text" name="foto" :value="old('foto')" required />
           </div>
 
           <div class="flex items-center justify-between mt-6 col-span-2">

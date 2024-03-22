@@ -13,8 +13,8 @@ class AbsensiController extends Controller
     public function index()
     {
         $title = 'Absensi';
-        $actionId = '/absensi/{{$item->id_absensi}}';
-        $header = ['ID Pegawai','Nama Lengkap','Jenis Kelamin','Telepon','Kantor Cabang','Jabatan','Gaji','Foto'];
+        $actionId = 'absensi';
+        $header = ['id_pegawai','nama_lengkap','jenis_kelamin','telepon','kantor_cabang','jabatan','gaji','foto'];
         $data = Absensi::all();
         return view('pages.absensi.index', compact('title','header','actionId','data')); 
     }
@@ -43,8 +43,7 @@ class AbsensiController extends Controller
         
         $absensi = Absensi::create($request->all()); 
 
-        return redirect()->route('pages.absensi.index')
-                        ->with('success', 'Absensi created successfully!');
+        return redirect('/absensi')->with('success', 'Absensi created successfully!');
     }
 
     /**
@@ -99,8 +98,7 @@ class AbsensiController extends Controller
 
         $absensis->update($request->all()); 
 
-        return redirect()->route('pages.absensi.index')
-                        ->with('success', 'Absensi updated successfully!');
+        return redirect('/absensi')->with('success', 'Absensi updated successfully!');
     }
 
     /**
@@ -116,7 +114,6 @@ class AbsensiController extends Controller
 
         $absensis->delete();
 
-        return redirect()->route('pages.absensi.index')
-                        ->with('success', 'Absensi deleted successfully!');
+        return redirect('/absensi')->with('success', 'Absensi deleted successfully!');
     }
 }
