@@ -44,10 +44,10 @@ class Pegawai extends Model
         return $this->belongsTo(Jabatan::class, 'jabatan');
     }
 
-    public function gaji()
-    {
-        return $this->belongsTo(Gaji::class, 'gaji');
-    }
+    // public function gaji()
+    // {
+    //     return $this->belongsTo(Gaji::class, 'gaji');
+    // }
 
     public function absensi()
     {

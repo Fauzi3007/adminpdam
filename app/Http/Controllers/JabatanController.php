@@ -40,72 +40,51 @@ class JabatanController extends Controller
 
         Jabatan::create($request->all());
 
-        return redirect('/jabatan')->with('success', 'Jabatan created successfully!');
+        return redirect()->route('jabatan.index')->with('success', 'Jabatan created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Jabatan $jabatan)
     {
-        $jabatans = Jabatan::find($id);
-
-        if (!$jabatans) {
-            return abort(404);
-        }
-
-        return view('pages.jabatan.show', compact('jabatans'));
+        return view('pages.jabatan.show', compact('jabatan'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Jabatan $jabatan)
     {
-        $jabatans = Jabatan::find($id);
-
-        if (!$jabatans) {
-            return abort(404);
-        }
-
-        // You might need to fetch additional data for the edit form
-        return view('pages.jabatan.edit', compact('jabatans'));
+        return view('pages.jabatan.edit', compact('jabatan'));
     }
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Jabatan $jabatan)
     {
         $request->validate([
             'nama_jabatan' => 'required|string|max:30',
-            'tunjangan_jabatan' => 'required|decimal',
+            'tunjangan_jabatan' => 'required|numeric',
         ]);
 
-        $jabatans = Jabatan::find($id);
+        $jabatan->update($request->all());
 
-        if (!$jabatans) {
-            return abort(404);
-        }
-
-        $jabatans->update($request->all()); 
-
-        return redirect('/jabatan')->with('success', 'Jabatan updated successfully!');
+        return redirect()->route('jabatan.index')->with('success', 'Jabatan updated successfully!');
     }
+    
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Jabatan $jabatan)
     {
-        $jabatans = Jabatan::find($id);
 
-        if (!$jabatans) {
-            return abort(404);
-        }
+        $jabatan->delete();
 
-        $jabatans->delete();
-
-        return redirect('/jabatan')->with('success', 'Jabatan deleted successfully!');
+        return redirect()->route('jabatan.index')->with('success', 'Jabatan deleted successfully!');
     }
 }

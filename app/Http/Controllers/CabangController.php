@@ -40,34 +40,31 @@ class CabangController extends Controller
 
         Cabang::create($validated);
 
-        return redirect('/cabang')->with('success', 'Cabang created successfully!');
+        return redirect()->route('cabang.index')->with('success', 'Cabang created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Cabang $cabang)
     {
-        $cabangs = Cabang::find($id);
-        return view('pages.cabang.show', compact('cabangs'));
+        return view('pages.cabang.show', compact('cabang'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Cabang $cabang)
     {
-        $cabangs = Cabang::find($id);
-        if (!$cabangs) {
-            return abort(404);
-        }
-        return view('pages.cabang.edit', compact('cabangs'));
+        return view('pages.cabang.edit', compact('cabang'));
     }
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Cabang $cabang)
     {
         $validated = $request->validate([
             'nama_cabang' => 'required|string|max:100',
@@ -75,25 +72,19 @@ class CabangController extends Controller
             'longitude_cabang' => 'required|string|max:20',
         ]);
 
-        $cabangs = Cabang::find($id);
-        if (!$cabangs) {
-            return abort(404);
-        }
-        $cabangs->update($validated);
+        
+        $cabang->update($validated);
 
-        return redirect('/cabang')->with('success', 'Cabang updated successfully!');
+        return redirect()->route('cabang.index')->with('success', 'Cabang updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Cabang $cabang)
     {
-        $cabangs = Cabang::find($id);
-        if (!$cabangs) {
-            return abort(404);
-        }
-        $cabangs->delete();
-        return redirect('/cabang')->with('success', 'Cabang deleted successfully!');
+       
+        $cabang->delete();
+        return redirect()->route('cabang.index')->with('success', 'Cabang deleted successfully!');
     }
 }

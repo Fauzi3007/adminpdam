@@ -1,11 +1,11 @@
 <x-app-layout>
 
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-        <form action="{{route('pegawai.store')}}" method="post" class="grid grid-cols-2 gap-6 mt-2">
+        <form action="/pegawai" method="post" class="grid grid-cols-2 gap-6 mt-2">
             @csrf
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <x-label for="id_user">{{ __('ID User') }} </x-label>
-                <x-input id="id_user" type="text" name="id_user" disabled  value="{{ Auth::user()->id }}" required />
+                <x-input id="id_user" type="text" name="id_user"   :value="old('id_user')" required />
                
                 <x-label for="nama_lengkap">{{ __('Nama Lengkap') }}</x-label>
                 <x-input id="nama_lengkap" type="text" name="nama_lengkap" :value="old('nama_lengkap')"
@@ -54,15 +54,8 @@
                     @endforeach
                 </select>
 
-                <x-label for="gaji">{{ __('Gaji') }} </x-label>
-                <select name="gaji" id="gaji" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    @foreach ($gajis as $item)
-                        <option value="{{ $item->id_gaji }}">{{ $item->total_gaji}}</option>
-                    @endforeach
-                </select>
-
                 <x-label for="foto">{{ __('Foto') }} </x-label>
-                <x-input id="foto" type="text" name="foto" :value="old('foto')" required />
+                <x-input id="foto" type="text" name="foto" :value="old('foto')"  />
             </div>
 
             <div class="flex items-center justify-between mt-6 col-span-2">

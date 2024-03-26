@@ -18,9 +18,12 @@
               <x-label for="tanggal">{{ __('Tanggal') }} </x-label>
               <x-input id="tanggal" type="date" name="tanggal" :value="old('tanggal')" required />
              
-              <x-label for="id_pegawai">{{ __('ID Pegawai') }} </x-label>
-              <x-input id="id_pegawai" disabled type="text" name="id_pegawai" :value="old('id_pegawai')" required />
-
+              <x-label for="id_pegawai">{{ __('Pegawai') }} </x-label>
+              <select name="id_pegawai" id="id_pegawai" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                @foreach($pegawais as $item)
+                <option value="{{$item->id_pegawai}}" {{ old('id_pegawai') === $item->id_pegawai ? 'selected' : '' }}>{{$item->nama_lengkap}}</option>
+                @endforeach
+            </select>  
           </div>
 
           <div class="flex items-center justify-between mt-6 col-span-2">

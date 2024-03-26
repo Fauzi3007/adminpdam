@@ -33,82 +33,62 @@ class CutiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_pegawai' => 'required|integer|exists:pegawais,id_pegawai',
+            'id_pegawai' => 'required|integer',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
             'keterangan' => 'nullable|string',
             'status' => 'required|string|max:20', 
         ]);
 
-        $cutis = Cuti::create($request->all());
+        Cuti::create($request->all());
 
-        return redirect('/cuti')->with('success', 'Cuti created successfully!');
+        return redirect()->route('cuti.index')->with('success', 'Cuti created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Cuti $cuti)
     {
-        $cutis = Cuti::find($id);
-
-        if (!$cutis) {
-            return abort(404);
-        }
-
-        return view('pages.cuti.show', compact('cutis'));
+        return view('pages.cuti.show', compact('cuti'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Cuti $cuti)
     {
-        $cutis = Cuti::find($id);
-
-        if (!$cutis) {
-            return abort(404);
-        }
-
-        return view('pages.cuti.edit', compact('cutis'));
+       
+        return view('pages.cuti.edit', compact('cuti'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Cuti $cuti)
     {
         $request->validate([
-            'id_pegawai' => 'required|integer|exists:pegawais,id_pegawai',
+            'id_pegawai' => 'required|integer',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
             'keterangan' => 'nullable|string',
             'status' => 'required|string|max:20', 
         ]);
 
-        $cutis = Cuti::find($id);
+        
+        $cuti->update($request->all());
 
-        if (!$cutis) {
-            return abort(404);
-        }
-
-        $cutis->update($request->all());
-
-        return redirect('/cuti')->with('success', 'Cuti updated successfully!');
+        return redirect()->route('cuti.index')->with('success', 'Cuti updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Cuti $cuti)
     {
-        $cutis = Cuti::find($id);
-
-        if (!$cutis) {
-            return abort(404);
-        }
-
-        $cutis->delete();
-        return redirect('/cuti')->with('success', 'Cuti deleted successfully!');
+        
+        $cuti->delete();
+        return redirect()->route('cuti.index')->with('success', 'Cuti deleted successfully!');
     }
 }

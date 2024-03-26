@@ -10,6 +10,8 @@ class Pencatatan extends Model
     use HasFactory;
 
     protected $table = 'pencatatans';
+    protected $primaryKey = 'id_pencatatan';
+
 
     protected $fillable = [
         'id_pelanggan',

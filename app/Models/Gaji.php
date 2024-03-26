@@ -14,6 +14,7 @@ class Gaji extends Model
     protected $primaryKey = 'id_gaji';
 
     protected $fillable = [
+        'id_pegawai',
         'gaji_pokok',
         'tunjangan_jabatan',
         'tunjangan_anak',

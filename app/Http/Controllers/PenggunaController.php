@@ -44,34 +44,31 @@ class PenggunaController extends Controller
 
         $penggunas = User::create($validated);
 
-        return redirect('/user')->with('success', 'Pengguna created successfully!');
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        $penggunas = User::find($id);
-        return view('pages.pengguna.show', compact('penggunas'));
+        return view('pages.pengguna.show', compact('user'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        $penggunas = User::find($id);
-        if (!$penggunas) {
-            return abort(404);
-        }
-        return view('pages.pengguna.edit', compact('penggunas'));
+        return view('pages.pengguna.edit', compact('user'));
     }
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
         $validated = $request->validate([
             'email' => 'required|email',
@@ -81,20 +78,19 @@ class PenggunaController extends Controller
 
         $validated['password'] = Hash::make($validated['password']);
 
-        $penggunas = User::find($id);
-        $penggunas->update($request->all());
+        
+        $user->update($request->all());
 
-        return redirect('/user')->with('success', 'Pengguna updated successfully!');
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        $penggunas = User::find($id);
-        $penggunas->delete();
+        $user->delete();
 
-        return redirect('/user')->with('success', 'Pengguna deleted successfully!');
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna deleted successfully!');
     }
 }

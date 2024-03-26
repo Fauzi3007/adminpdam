@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gaji;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
 class GajiController extends Controller
@@ -23,8 +24,9 @@ class GajiController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('pages.gaji.create');
+    {   
+        $pegawais = Pegawai::all();
+        return view('pages.gaji.create',compact('pegawais'));
     }
 
     /**
@@ -32,7 +34,8 @@ class GajiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
+            'id_pegawai'=> 'required|integer',
             'tanggal' => 'required|date',
             'gaji_pokok' => 'required|numeric',
             'tunjangan_jabatan' => 'required|numeric',
@@ -43,76 +46,61 @@ class GajiController extends Controller
             'total_gaji' => 'required|numeric',
         ]);
 
-        $gajis = Gaji::create($request->all());
+        
+        Gaji::create($validated);
 
-        return redirect('/gaji')->with('success', 'Gaji created successfully!');
+        return redirect()->route('gaji.index')->with('success', 'Gaji created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Gaji $gaji)
     {
-        $gajis = Gaji::find($id);
-
-        if (!$gajis) {
-            return abort(404);
-        }
-
-        return view('pages.gaji.show', compact('gajis'));
+        return view('pages.gaji.show', compact('gaji'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Gaji $gaji)
     {
-        $gajis = Gaji::find($id);
-
-        if (!$gajis) {
-            return abort(404);
-        }
-
-        return view('pages.gaji.edit', compact('gajis'));
+        $pegawais = Pegawai::all();
+        return view('pages.gaji.edit', compact('gaji','pegawais'));
     }
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Gaji $gaji)
     {
-        $request->validate([
+       $validated = $request->validate([
+            'id_pegawai'=> 'required|integer',
             'tanggal' => 'required|date',
-            'gaji_pokok' => 'required|decimal',
-            'tunjangan_jabatan' => 'required|decimal',
-            'tunjangan_anak' => 'required|decimal',
-            'tunjangan_nikah' => 'required|decimal',
-            'potongan' => 'required|decimal',
-            'pajak' => 'required|decimal',
-            'total_gaji' => 'required|decimal',
+            'gaji_pokok' => 'required|numeric',
+            'tunjangan_jabatan' => 'required|numeric',
+            'tunjangan_anak' => 'required|numeric',
+            'tunjangan_nikah' => 'required|numeric',
+            'potongan' => 'required|numeric',
+            'pajak' => 'required|numeric',
+            'total_gaji' => 'required|numeric',
         ]);
 
-        $gajis = Gaji::find($id);
-        if (!$gajis) {
-            return abort(404);
-        }
-        $gajis->update($request->all());
+        
+        $gaji->update($validated);
 
-        return redirect('/gaji')->with('success', 'Gaji updated successfully!');
+        return redirect()->route('gaji.index')->with('success', 'Gaji updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Gaji $gaji)
     {
-        $gajis = Gaji::find($id);
-
-        if (!$gajis) {
-            return abort(404);
-        }
-
-        $gajis->delete();
-        return redirect('/gaji')->with('success', 'Gaji deleted successfully!');
+        
+        $gaji->delete();
+        return redirect()->route('gaji.index')->with('success', 'Gaji deleted successfully!');
     }
 }

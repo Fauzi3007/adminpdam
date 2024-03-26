@@ -40,13 +40,25 @@ class PegawaiController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validatePegawai($request);
+        $validated = $request->validate([
+            'id_user' => 'required|integer',
+            'nama_lengkap' => 'required|string|max:50',
+            'jenis_kelamin' => 'required|string',
+            'tgl_lahir' => 'required|date',
+            'telepon' => 'required|string|max:15',
+            'alamat' => 'required|string',
+            'status_nikah' => 'required|string',
+            'jumlah_anak' => 'required|integer',
+            'kantor_cabang' => 'required|integer',
+            'jabatan' => 'required|integer',
+            'foto' => 'nullable|string|max:100',
+        ]);
 
-        Pegawai::create($request->all());
+        Pegawai::create($validated);
         // $this->handleFileUpload($request, $pegawai);
 
 
-        return redirect('/pegawai')->with('success', 'Pegawai created successfully!');
+        return redirect()->route('pegawai.index')->with('success', 'Pegawai created successfully!');
     }
 
     /**
@@ -56,71 +68,61 @@ class PegawaiController extends Controller
     {
         return view('pages.pegawai.show', compact('pegawai'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Pegawai $pegawai)
     {
-        return view('pages.pegawai.edit', compact('pegawai'));
+        $cabangs = Cabang::all();
+        $jabatans = Jabatan::all();
+        $gajis = Gaji::all(); 
+        return view('pages.pegawai.edit', compact('pegawai','cabangs','jabatans','gajis'));
     }
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Pegawai $pegawai)
     {
-        $this->validatePegawai($request);
-
-        $pegawais = Pegawai::find($id); 
-
-        if (!$pegawais) {
-            return abort(404); 
-        }
-
-        // $this->handleFileUpload($request, $pegawai);
-        $pegawais->update($request->all());
-
-        return redirect('/pegawai')->with('success', 'Pelanggan updated successfully!');
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $pegawais = pegawai::find($id); 
-
-        if (!$pegawais) {
-            return abort(404); 
-        }
-
-        $pegawais->delete();
-
-        return redirect('/pegawai')->with('success', 'Pegawai deleted successfully!');
-    }
-
-    /**
-     * Validate the request data for Pegawai.
-     */
-    protected function validatePegawai(Request $request)
-    {
-        return $request->validate([
-            'id_user' => 'required|integer|exists:users,id_user',
+        $validated = $request->validate([
+            'id_user' => 'required|integer',
             'nama_lengkap' => 'required|string|max:50',
-            'jenis_kelamin' => 'required|string|in:L,P',
+            'jenis_kelamin' => 'required|string',
             'tgl_lahir' => 'required|date',
             'telepon' => 'required|string|max:15',
             'alamat' => 'required|string',
             'status_nikah' => 'required|string',
             'jumlah_anak' => 'required|integer',
-            'kantor_cabang' => 'required|integer|exists:cabangs,id_cabang',
-            'jabatan' => 'required|integer|exists:jabatans,id_jabatan',
+            'kantor_cabang' => 'required|integer',
+            'jabatan' => 'required|integer',
             'foto' => 'nullable|string|max:100',
         ]);
+
+        $pegawai->update($validated);
+        // $this->handleFileUpload($request, $pegawai);
+
+        return redirect()->route('pegawai.index')->with('success', 'Pegawai updated successfully!');
+    }
+   
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Pegawai $pegawai)
+    {
+       
+        $pegawai->delete();
+
+        return redirect()->route('pegawai.index')->with('success', 'Pegawai deleted successfully!');
     }
 
+    /**
+     * Validate the request data for Pegawai.
+     */
+   
     /**
      * Handle file upload for Pegawai.
      */

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pegawai;
+use App\Models\Pelanggan;
 use App\Models\Pencatatan;
 use Illuminate\Http\Request;
 
@@ -24,7 +26,10 @@ class PencatatanController extends Controller
      */
     public function create()
     {
-        return view('pages.pencatatan.create');
+        $pegawais = Pegawai::all();
+        $pelanggans = Pelanggan::all();
+
+        return view('pages.pencatatan.create',compact('pegawais','pelanggans'));
     }
 
     /**
@@ -32,33 +37,19 @@ class PencatatanController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'id_pelanggan' => 'required|exists:pelanggans,id_pelanggan',
+        $validated = $request->validate([
+            'id_pelanggan' => 'required|integer',
             'meteran_lama' => 'required|integer',
             'meteran_baru' => 'required|integer',
+            'foto_meteran' => 'nullable|string|max:100',
             'tanggal' => 'required|date',
-            'foto_meteran_meteran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'id_pegawai' => 'required|exists:pegawais,id_pegawai',
+            'id_pegawai' => 'required|integer',
         ]);
 
-        $pencatatan = new Pencatatan();
-        $pencatatan->id_pelanggan = $request->id_pelanggan;
-        $pencatatan->meteran_lama = $request->meteran_lama;
-        $pencatatan->meteran_baru = $request->meteran_baru;
-        $pencatatan->tanggal = $request->tanggal;
-        $pencatatan->id_pegawai = $request->id_pegawai;
 
-        if ($request->hasFile('foto_meteran')) {
-            $image = $request->file('foto_meteran');
-            $name = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $name);
-            $pencatatan->foto_meteran = $name;
-        }
+        Pencatatan::create($validated);
 
-        $pencatatan->save();
-
-        return redirect('/pencatatan')->with('success', 'Pencatatan updated successfully!');
+        return redirect()->route('pencatatan.index')->with('success', 'Pencatatan updated successfully!');
         
         
     }
@@ -66,77 +57,52 @@ class PencatatanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Pencatatan $pencatatan)
     {
-        $pencatatan = Pencatatan::find($id);
-
-        if (!$pencatatan) {
-            return abort(404);
-        }
-
         return view('pages.pencatatan.show', compact('pencatatan'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Pencatatan $pencatatan)
     {
-        $pencatatan = Pencatatan::find($id);
 
-        if (!$pencatatan) {
-            return abort(404);
-        }
+        $pegawais = Pegawai::all();
+        $pelanggans = Pelanggan::all();
 
-        return view('pages.pencatatan.edit', compact('pencatatan'));
+        return view('pages.pencatatan.edit', compact('pencatatan','pegawais','pelanggans'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Pencatatan $pencatatan)
     {
-        $request->validate([
-            'id_pelanggan' => 'required|exists:pelanggans,id_pelanggan',
+        $validated = $request->validate([
+            'id_pelanggan' => 'required|integer',
             'meteran_lama' => 'required|integer',
             'meteran_baru' => 'required|integer',
+            'foto_meteran' => 'nullable|string|max:100',
             'tanggal' => 'required|date',
-            'foto_meteran_meteran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'id_pegawai' => 'required|exists:pegawais,id_pegawai',
+            'id_pegawai' => 'required|integer',
         ]);
 
-        $pencatatan = Pencatatan::find($id);
+    
+        $pencatatan->update($validated);
 
-        if (!$pencatatan) {
-            return abort(404);
-        }
-
-        if ($request->hasFile('foto_meteran')) {
-            $image = $request->file('foto_meteran');
-            $name = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $name);
-            $pencatatan->foto_meteran = $name;
-        }
-
-        $pencatatan->update($request->all());
-
-        return redirect('/pencatatan')->with('success', 'Pencatatan updated successfully!');
+        return redirect()->route('pencatatan.index')->with('success', 'Pencatatan updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Pencatatan $pencatatan)
     {
-        $pencatatan = Pencatatan::find($id);
-
-        if (!$pencatatan) {
-            return abort(404);
-        }
-
+       
         $pencatatan->delete();
 
-        return redirect('/pencatatan')->with('success', 'Pencatatan deleted successfully!');
+        return redirect()->route('pencatatan.index')->with('success', 'Pencatatan deleted successfully!');
     }
 }

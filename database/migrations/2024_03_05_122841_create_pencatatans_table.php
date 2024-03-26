@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('pencatatans', function (Blueprint $table) {
             $table->increments('id_pencatatan');
-            $table->unsignedInteger('id_pelanggan')->constrained(
-                table: 'pelanggans', column:'id_pelanggan',indexName: 'pelangganForeign'
+            $table->unsignedInteger('nomor_pelanggan')->constrained(
+                table: 'pelanggans', column:'nomor_pelanggan',indexName: 'pelangganForeign'
             );
             $table->unsignedInteger('meteran_lama');
             $table->unsignedInteger('meteran_baru');

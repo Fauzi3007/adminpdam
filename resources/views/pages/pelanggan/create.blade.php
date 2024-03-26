@@ -21,7 +21,11 @@
               <x-input id="longitude" type="number" step="any" name="longitude" :value="old('longitude')" required />
 
               <x-label for="lingkup_cabang">{{ __('Lingkup Cabang') }} </x-label>
-              <x-input id="lingkup_cabang" type="text" name="lingkup_cabang" :value="old('lingkup_cabang')" required />
+            <select id="lingkup_cabang" name="lingkup_cabang"  class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                @foreach($cabangs as $item)
+                    <option value="{{ $item->id_cabang }}" {{ old('lingkup_cabang') === $item->id_cabang ? 'selected' : '' }}>{{ $item->nama_cabang }}</option>
+                @endforeach
+            </select>
             
           </div>
 

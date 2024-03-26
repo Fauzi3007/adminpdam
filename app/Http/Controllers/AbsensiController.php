@@ -34,51 +34,40 @@ class AbsensiController extends Controller
     {
         $request->validate([
             'tanggal' => 'required|date',
-            'waktu_masuk' => 'nullable|date_format:H:i:s',  
-            'waktu_keluar' => 'nullable|date_format:H:i:s', 
+            'waktu_masuk' => 'nullable|date_format:H:i',  
+            'waktu_keluar' => 'nullable|date_format:H:i', 
             'status' => 'required|string|max:20',
             'keterangan' => 'nullable|string|in:Masuk,Izin,Sakit,Cuti',  
-            'id_pegawai' => 'required|integer|exists:pegawais,id_pegawai',
+            'id_pegawai' => 'required|integer',
         ]);
         
-        $absensi = Absensi::create($request->all()); 
+       Absensi::create($request->all()); 
 
-        return redirect('/absensi')->with('success', 'Absensi created successfully!');
+        return redirect()->route('absensi.index')->with('success', 'Absensi created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Absensi $absensi)
     {
-        $absensi = Absensi::find($id); // Find Absensi by ID
-
-        if (!$absensi) {
-            return abort(404); // Handle non-existent resource
-        }
-
-        return view('pages.absensi.show', compact('absensis'));
+       
+        return view('pages.absensi.show', compact('absensi'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Absensi $absensi)
     {
-        $absensis = Absensi::find($id);
-
-        if (!$absensis) {
-            return abort(404);
-        }
-
-        // You might need to fetch additional data for the edit form
-        return view('pages.absensi.edit', compact('absensis'));
+       
+        return view('pages.absensi.edit', compact('absensi'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Absensi $absensi)
     {
 
         $request->validate([
@@ -90,30 +79,19 @@ class AbsensiController extends Controller
             'id_pegawai' => 'required|integer|exists:pegawais,id_pegawai',
         ]);
 
-        $absensis = Absensi::find($id);
+        $absensi->update($request->all()); 
 
-        if (!$absensis) {
-            return abort(404);
-        }
-
-        $absensis->update($request->all()); 
-
-        return redirect('/absensi')->with('success', 'Absensi updated successfully!');
+        return redirect()->route('absensi.index')->with('success', 'Absensi updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Absensi $absensi)
     {
-        $absensis = Absensi::find($id);
+        $absensi->delete();
 
-        if (!$absensis) {
-            return abort(404);
-        }
-
-        $absensis->delete();
-
-        return redirect('/absensi')->with('success', 'Absensi deleted successfully!');
+        return redirect()->route('absensi.index')->with('success', 'Absensi deleted successfully!');
     }
+    
 }
