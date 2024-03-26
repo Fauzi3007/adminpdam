@@ -24,7 +24,7 @@ class Pegawai extends Model
         'jumlah_anak',
         'kantor_cabang',
         'jabatan',
-        'gaji',
+        'gaji_pokok',
         'foto',
         'id_user',
     ];
@@ -44,10 +44,10 @@ class Pegawai extends Model
         return $this->belongsTo(Jabatan::class, 'jabatan');
     }
 
-    // public function gaji()
-    // {
-    //     return $this->belongsTo(Gaji::class, 'gaji');
-    // }
+    public function gaji()
+    {
+        return $this->hasMany(Gaji::class, 'id_pegawai');
+    }
 
     public function absensi()
     {

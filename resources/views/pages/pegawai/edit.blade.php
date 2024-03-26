@@ -1,63 +1,88 @@
 <x-app-layout>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Kode JavaScript untuk pratinjau gambar
+            function previewImage(input) {
+                var reader = new FileReader();
+    
+                reader.onload = function (e) {
+                    var preview = document.getElementById('preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+    
+                reader.readAsDataURL(input.files[0]);
+            }
+    
+            // Menambahkan event listener ke input file
+            document.getElementById('foto').onchange = function (e) {
+                previewImage(this);
+            };
+        });
+    </script>
+
   <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-      <form action="/pegawai/{{$pegawais->id_pegawai}}" method="post" class="grid grid-cols-2 gap-6 mt-2">
+      <form action="{{route('pegawai.update',$pegawai->id_pegawai)}}" method="post" class="grid grid-cols-2 gap-6 mt-2" enctype="multipart/form-data">
         @method('PUT')
           @csrf
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <x-label for="id_user">{{ __('ID User') }} </x-label>
-              <x-input id="id_user" type="text" name="id_user" disabled :value="old('id_user',$pegawais->id_user)" required />
+              <x-input id="id_user" type="text" name="id_user" disabled :value="old('id_user',$pegawai->id_user)" required />
                 
               <x-label for="nama_lengkap">{{ __('Nama Lengkap') }}</x-label>
-              <x-input id="nama_lengkap" type="text" name="nama_lengkap" :value="old('nama_lengkap',$pegawais->nama_lengkap)"
+              <x-input id="nama_lengkap" type="text" name="nama_lengkap" :value="old('nama_lengkap',$pegawai->nama_lengkap)"
                   required />
 
               <x-label for="jenis_kelamin">{{ __('Jenis Kelamin') }} </x-label>
               <select name="jenis_kelamin" id="jenis_kelamin" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                <option value="L" {{ $pegawais->jenis_kelamin === 'L' ? 'selected' : '' }}>Laki-laki</option>
-                <option value="P" {{ $pegawais->jenis_kelamin === 'P' ? 'selected' : '' }}>Perempuan</option>
+                <option value="L" {{ $pegawai->jenis_kelamin === 'L' ? 'selected' : '' }}>Laki-laki</option>
+                <option value="P" {{ $pegawai->jenis_kelamin === 'P' ? 'selected' : '' }}>Perempuan</option>
             </select>
 
               <x-label for="tgl_lahir">{{ __('Tanggal Lahir') }} </x-label>
-              <x-input id="tgl_lahir" type="date" name="tgl_lahir" :value="old('tgl_lahir',$pegawais->tgl_lahir)" required />
+              <x-input id="tgl_lahir" type="date" name="tgl_lahir" :value="old('tgl_lahir',$pegawai->tgl_lahir)" required />
 
               <x-label for="telepon">{{ __('Telepon') }} </x-label>
-              <x-input id="telepon" type="text" name="telepon" :value="old('telepon',$pegawais->telepon)" required />
+              <x-input id="telepon" type="text" name="telepon" :value="old('telepon',$pegawai->telepon)" required />
 
               <x-label for="alamat">{{ __('Alamat') }} </x-label>
-              <x-input id="alamat" type="text" name="alamat" :value="old('alamat',$pegawais->alamat)" required />
+              <x-input id="alamat" type="text" name="alamat" :value="old('alamat',$pegawai->alamat)" required />
 
           </div>
 
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <x-label for="status_nikah">{{ __('Status Nikah') }} </x-label>
               <select name="status_nikah" id="status_nikah" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                <option value="Belum Menikah" {{ old('status_nikah') === 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
-                <option value="Menikah" {{ old('status_nikah') === 'Menikah' ? 'selected' : '' }}>Menikah</option>
-                <option value="Cerai" {{ old('status_nikah') === 'Cerai' ? 'selected' : '' }}>Cerai</option>
+                <option value="Belum Menikah" {{ old('status_nikah') === $pegawai->status_nikah ? 'selected' : '' }}>Belum Menikah</option>
+                <option value="Menikah" {{ old('status_nikah') === $pegawai->status_nikah ? 'selected' : '' }}>Menikah</option>
+                <option value="Janda" {{ old('status_nikah') === $pegawai->status_nikah ? 'selected' : '' }}>Janda</option>
+                <option value="Duda" {{ old('status_nikah') === $pegawai->status_nikah ? 'selected' : '' }}>Duda</option>
             </select>   
 
               <x-label for="jumlah_anak">{{ __('Jumlah Anak') }} </x-label>
-              <x-input id="jumlah_anak" type="number" name="jumlah_anak" :value="old('jumlah_anak',$pegawais->jumlah_anak)"
+              <x-input id="jumlah_anak" type="number" name="jumlah_anak" :value="old('jumlah_anak',$pegawai->jumlah_anak)"
                   required />
 
                   <x-label for="kantor_cabang">{{ __('Kantor Cabang') }} </x-label>
                   <select name="kantor_cabang" id="kantor_cabang" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                       @foreach ($cabangs as $item)
-                          <option value="{{ $item->id_cabang }}"  {{ $pegawais->kantor_cabang === $item->id_cabang  ? 'selected' : '' }}>{{ $item->nama_cabang }}</option>
+                          <option value="{{ $item->id_cabang }}"  {{ $pegawai->kantor_cabang === $item->id_cabang  ? 'selected' : '' }}>{{ $item->nama_cabang }}</option>
                       @endforeach
                   </select>
   
                   <x-label for="jabatan">{{ __('Jabatan') }} </x-label>
                   <select name="jabatan" id="jabatan" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                       @foreach ($jabatans as $item)
-                          <option value="{{ $item->id_jabatan }}"  {{ $pegawais->jabatan ===  $item->id_jabatan ? 'selected' : '' }}>{{ $item->nama_jabatan }}</option>
+                          <option value="{{ $item->id_jabatan }}"  {{ $pegawai->jabatan ===  $item->id_jabatan ? 'selected' : '' }}>{{ $item->nama_jabatan }}</option>
                       @endforeach
                   </select>
 
              
               <x-label for="foto">{{ __('Foto') }} </x-label>
-              <x-input id="foto" type="text" name="foto" :value="old('foto',$pegawais->foto)"  />
+              <x-input id="foto" type="text" name="foto" :value="old('foto',$pegawai->foto)"  />
+                
+            <img id="preview" src="#" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;" />
           </div>
 
           <div class="flex items-center justify-between mt-6 col-span-2">

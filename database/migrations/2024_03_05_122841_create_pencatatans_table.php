@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedInteger('meteran_lama');
             $table->unsignedInteger('meteran_baru');
             $table->date('tanggal');
-            $table->string('foto_meteran', 100);
+            $table->string('foto_meteran', 50);
             $table->unsignedInteger('id_pegawai')->constrained(
                 table: 'pegawais', column:'id_pegawai',indexName: 'pegawaiCatatForeign'
             );

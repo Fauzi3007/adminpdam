@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cuti;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
 class CutiController extends Controller
@@ -24,7 +25,8 @@ class CutiController extends Controller
      */
     public function create()
     {
-        return view('pages.cuti.create');
+        $pegawais = Pegawai::all();
+        return view('pages.cuti.create', compact('pegawais'));
     }
 
     /**
@@ -37,7 +39,7 @@ class CutiController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
             'keterangan' => 'nullable|string',
-            'status' => 'required|string|max:20', 
+            'status' => 'required|string|max:10', 
         ]);
 
         Cuti::create($request->all());
@@ -59,8 +61,9 @@ class CutiController extends Controller
      */
     public function edit(Cuti $cuti)
     {
-       
-        return view('pages.cuti.edit', compact('cuti'));
+        $pegawais = Pegawai::all();
+
+        return view('pages.cuti.edit', compact('cuti','pegawais'));
     }
 
     /**
@@ -73,7 +76,7 @@ class CutiController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
             'keterangan' => 'nullable|string',
-            'status' => 'required|string|max:20', 
+            'status' => 'required|string|max:10', 
         ]);
 
         

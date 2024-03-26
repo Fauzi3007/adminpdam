@@ -49,13 +49,15 @@ class PegawaiController extends Controller
             'alamat' => 'required|string',
             'status_nikah' => 'required|string',
             'jumlah_anak' => 'required|integer',
+            'gaji_pokok' => 'required|numeric',
             'kantor_cabang' => 'required|integer',
             'jabatan' => 'required|integer',
-            'foto' => 'nullable|string|max:100',
+            'foto' => 'nullable|image|max:2048', 
         ]);
 
+
+        $this->handleFileUpload($request, new Pegawai());
         Pegawai::create($validated);
-        // $this->handleFileUpload($request, $pegawai);
 
 
         return redirect()->route('pegawai.index')->with('success', 'Pegawai created successfully!');
@@ -96,13 +98,14 @@ class PegawaiController extends Controller
             'alamat' => 'required|string',
             'status_nikah' => 'required|string',
             'jumlah_anak' => 'required|integer',
+            'gaji_pokok' => 'required|numeric',
             'kantor_cabang' => 'required|integer',
             'jabatan' => 'required|integer',
-            'foto' => 'nullable|string|max:100',
+            'foto' => 'nullable|image|max:2048',
         ]);
 
+        $this->handleFileUpload($request, $pegawai);
         $pegawai->update($validated);
-        // $this->handleFileUpload($request, $pegawai);
 
         return redirect()->route('pegawai.index')->with('success', 'Pegawai updated successfully!');
     }
@@ -126,14 +129,14 @@ class PegawaiController extends Controller
     /**
      * Handle file upload for Pegawai.
      */
-    // protected function handleFileUpload(Request $request, Pegawai $pegawai)
-    // {
-    //     if ($request->hasFile('foto')) {
-    //         $image = $request->file('foto');
-    //         $name = time() . '.' . $image->getClientOriginalExtension();
-    //         $destinationPath = public_path('/images');
-    //         $image->move($destinationPath, $name);
-    //         $pegawai->foto = $name;
-    //     }
-    // }
+    protected function handleFileUpload(Request $request, Pegawai $pegawai)
+    {
+        if ($request->hasFile('foto')) {
+            $image = $request->file('foto');
+            $name = time() . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $name);
+            $pegawai->foto = $name;
+        }
+    }
 }

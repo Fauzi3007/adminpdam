@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('/cabang', CabangController::class);
     Route::resource('/cuti', CutiController::class);
     Route::resource('/gaji', GajiController::class);
+    Route::get('/hitung-gaji', [GajiController::class, 'createPegawai'])->name('hitung-gaji');
     Route::resource('/jabatan', JabatanController::class);
     Route::resource('/laporan', LaporanController::class);
     Route::resource('/pegawai', PegawaiController::class);

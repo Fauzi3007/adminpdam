@@ -44,7 +44,7 @@ class PenggunaController extends Controller
 
         $penggunas = User::create($validated);
 
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna created successfully!');
+        return redirect()->route('user.index')->with('success', 'Pengguna created successfully!');
     }
 
     /**
@@ -81,7 +81,7 @@ class PenggunaController extends Controller
         
         $user->update($request->all());
 
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna updated successfully!');
+        return redirect()->route('user.index')->with('success', 'Pengguna updated successfully!');
     }
 
     /**
@@ -91,6 +91,6 @@ class PenggunaController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna deleted successfully!');
+        return redirect()->route('user.index')->with('success', 'Pengguna deleted successfully!');
     }
 }

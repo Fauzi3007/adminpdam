@@ -8,7 +8,7 @@
   
       <div class="gap-6 mt-2">
 
-        <form action="/absensi" method="post">
+        <form action="{{route('absensi.store')}}" method="post">
             @csrf
             <div>
                 <x-label for="tanggal">{{ __('Tanggal') }}</x-label>

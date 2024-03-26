@@ -26,7 +26,8 @@ return new class extends Migration
             $table->unsignedInteger('jabatan')->constrained(
                 table: 'jabatans',column:'id_jabatan' ,indexName: 'jabatanForeign'
             );
-            $table->string('foto', 100);
+            $table->float('gaji_pokok',10,2);
+            $table->string('foto', 50)->nullable();
             $table->unsignedInteger('id_user')->constrained(
                 table: 'users', indexName: 'userForeign'
             );

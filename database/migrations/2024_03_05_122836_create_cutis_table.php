@@ -18,8 +18,8 @@ return new class extends Migration
             );
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
-            $table->string('keterangan', 30);
-            $table->string('status', 30);
+            $table->string('keterangan', 50);
+            $table->string('status', 10);
             $table->timestamps();
 
         });
