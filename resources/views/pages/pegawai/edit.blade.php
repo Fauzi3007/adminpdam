@@ -22,75 +22,77 @@
         });
     </script>
 
-  <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-      <form action="{{route('pegawai.update',$pegawai->id_pegawai)}}" method="post" class="grid grid-cols-2 gap-6 mt-2" enctype="multipart/form-data">
-        @method('PUT')
-          @csrf
-          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <x-label for="id_user">{{ __('ID User') }} </x-label>
-              <x-input id="id_user" type="text" name="id_user" disabled :value="old('id_user',$pegawai->id_user)" required />
-                
-              <x-label for="nama_lengkap">{{ __('Nama Lengkap') }}</x-label>
-              <x-input id="nama_lengkap" type="text" name="nama_lengkap" :value="old('nama_lengkap',$pegawai->nama_lengkap)"
-                  required />
+    <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+        <form action="{{route('pegawai.update',$pegawai->id_pegawai)}}" method="post" class="grid grid-cols-2 gap-6 mt-2" enctype="multipart/form-data">
+            @method('PUT')
+            @csrf
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <x-label for="id_user">{{ __('ID Pengguna') }} </x-label>
+                <x-input id="id_user" type="text" name="id_user"   :value="old('id_user',$pegawai->id_user)" required />
+               
+                <x-label for="nama_lengkap">{{ __('Nama Lengkap') }}</x-label>
+                <x-input id="nama_lengkap" type="text" name="nama_lengkap" :value="old('nama_lengkap',$pegawai->nama_lengkap)"
+                    required />
 
-              <x-label for="jenis_kelamin">{{ __('Jenis Kelamin') }} </x-label>
-              <select name="jenis_kelamin" id="jenis_kelamin" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                <option value="L" {{ $pegawai->jenis_kelamin === 'L' ? 'selected' : '' }}>Laki-laki</option>
-                <option value="P" {{ $pegawai->jenis_kelamin === 'P' ? 'selected' : '' }}>Perempuan</option>
-            </select>
+                <x-label for="jenis_kelamin">{{ __('Jenis Kelamin') }} </x-label>
+                <select name="jenis_kelamin" id="jenis_kelamin" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <option value="L" {{ $pegawai->jenis_kelamin === 'L' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="P" {{ $pegawai->jenis_kelamin === 'P' ? 'selected' : '' }}>Perempuan</option>
+                </select>
 
-              <x-label for="tgl_lahir">{{ __('Tanggal Lahir') }} </x-label>
-              <x-input id="tgl_lahir" type="date" name="tgl_lahir" :value="old('tgl_lahir',$pegawai->tgl_lahir)" required />
+                <x-label for="tgl_lahir">{{ __('Tanggal Lahir') }} </x-label>
+                <x-input id="tgl_lahir" type="date" name="tgl_lahir" :value="old('tgl_lahir',$pegawai->tgl_lahir)" required />
 
-              <x-label for="telepon">{{ __('Telepon') }} </x-label>
-              <x-input id="telepon" type="text" name="telepon" :value="old('telepon',$pegawai->telepon)" required />
+                <x-label for="telepon">{{ __('Telepon') }} </x-label>
+                <x-input id="telepon" type="text" name="telepon" :value="old('telepon',$pegawai->telepon)" required />
 
-              <x-label for="alamat">{{ __('Alamat') }} </x-label>
-              <x-input id="alamat" type="text" name="alamat" :value="old('alamat',$pegawai->alamat)" required />
+                <x-label for="alamat">{{ __('Alamat') }} </x-label>
+                <x-input id="alamat" type="text" name="alamat" :value="old('alamat',$pegawai->alamat)" required />
 
-          </div>
+            </div>
 
-          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <x-label for="status_nikah">{{ __('Status Nikah') }} </x-label>
-              <select name="status_nikah" id="status_nikah" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                <option value="Belum Menikah" {{ old('status_nikah') === $pegawai->status_nikah ? 'selected' : '' }}>Belum Menikah</option>
-                <option value="Menikah" {{ old('status_nikah') === $pegawai->status_nikah ? 'selected' : '' }}>Menikah</option>
-                <option value="Janda" {{ old('status_nikah') === $pegawai->status_nikah ? 'selected' : '' }}>Janda</option>
-                <option value="Duda" {{ old('status_nikah') === $pegawai->status_nikah ? 'selected' : '' }}>Duda</option>
-            </select>   
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <x-label for="status_nikah">{{ __('Status Nikah') }} </x-label>
+                <select name="status_nikah" id="status_nikah" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <option value="Belum Menikah" {{ $pegawai->status_nikah === 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
+                    <option value="Menikah" {{ $pegawai->status_nikah === 'Menikah' ? 'selected' : '' }}>Menikah</option>
+                    <option value="Janda" {{ $pegawai->status_nikah === 'Janda' ? 'selected' : '' }}>Janda</option>
+                    <option value="Duda" {{ $pegawai->status_nikah === 'Duda' ? 'selected' : '' }}>Duda</option>
+                </select>       
 
-              <x-label for="jumlah_anak">{{ __('Jumlah Anak') }} </x-label>
-              <x-input id="jumlah_anak" type="number" name="jumlah_anak" :value="old('jumlah_anak',$pegawai->jumlah_anak)"
-                  required />
+                <x-label for="jumlah_anak">{{ __('Jumlah Anak') }} </x-label>
+                <x-input id="jumlah_anak" type="number" name="jumlah_anak" :value="old('jumlah_anak',$pegawai->jumlah_anak)"
+                    required />
 
-                  <x-label for="kantor_cabang">{{ __('Kantor Cabang') }} </x-label>
-                  <select name="kantor_cabang" id="kantor_cabang" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                      @foreach ($cabangs as $item)
-                          <option value="{{ $item->id_cabang }}"  {{ $pegawai->kantor_cabang === $item->id_cabang  ? 'selected' : '' }}>{{ $item->nama_cabang }}</option>
-                      @endforeach
-                  </select>
-  
-                  <x-label for="jabatan">{{ __('Jabatan') }} </x-label>
-                  <select name="jabatan" id="jabatan" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                      @foreach ($jabatans as $item)
-                          <option value="{{ $item->id_jabatan }}"  {{ $pegawai->jabatan ===  $item->id_jabatan ? 'selected' : '' }}>{{ $item->nama_jabatan }}</option>
-                      @endforeach
-                  </select>
+                <x-label for="gaji_pokok">{{ __('Gaji Pokok') }} </x-label>
+                <x-input id="gaji_pokok" type="number" step="any" name="gaji_pokok" :value="old('gaji_pokok',$pegawai->gaji_pokok)"
+                    required />
 
-             
-              <x-label for="foto">{{ __('Foto') }} </x-label>
-              <x-input id="foto" type="text" name="foto" :value="old('foto',$pegawai->foto)"  />
-                
-            <img id="preview" src="#" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;" />
-          </div>
+                <x-label for="kantor_cabang">{{ __('Kantor Cabang') }} </x-label>
+                <select name="kantor_cabang" id="kantor_cabang" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @foreach ($cabangs as $item)
+                        <option value="{{ $item->id_cabang }}" {{ $pegawai->kantor_cabang === $item->id_cabang ? 'selected' : '' }}>{{ $item->nama_cabang }}</option>
+                    @endforeach
+                </select>
 
-          <div class="flex items-center justify-between mt-6 col-span-2">
-              <x-button type="submit">
-                  {{ __('Simpan') }}
-              </x-button>
-          </div>
-      </form>
-  </div>
+                <x-label for="jabatan">{{ __('Jabatan') }} </x-label>
+                <select name="jabatan" id="jabatan" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @foreach ($jabatans as $item)
+                        <option value="{{ $item->id_jabatan }}" {{$item->id_jabatan == $pegawai->jabatan ? 'selected' : ''}}>{{ $item->nama_jabatan }}</option>
+                    @endforeach
+                </select>
+
+                <x-label for="foto">{{ __('Foto') }} </x-label>
+                <x-input id="foto" type="file" name="foto" :value="old('foto')"  />
+                <img id="preview" src="#" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;" />
+            </div>
+
+            <div class="flex items-center justify-between mt-6 col-span-2">
+                <x-button type="submit">
+                    {{ __('Simpan') }}
+                </x-button>
+            </div>
+        </form>
+    </div>
 
 </x-app-layout>

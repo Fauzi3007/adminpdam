@@ -1,11 +1,6 @@
 <x-app-layout>
 
-    <script>
-        document.getElementById('id_pegawai').addEventListener('change', function() {
-            var selectedOption = this.value;
-            window.location.href = "{{ route('hitung-gaji', ['id' => ':id']) }}".replace(':id', selectedOption);
-        });
-    </script>
+    
     
 
   <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
@@ -14,11 +9,17 @@
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <x-label for="id_pegawai">{{ __('Pegawai') }} </x-label>
             <select name="id_pegawai" id="id_pegawai" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <option >Pilih Pegawai</option>
                 @foreach($pegawais as $item)
-                <option value="{{$item->id_pegawai}}" {{ old('id_pegawai') === $item->id_pegawai ? 'selected' : '' }}>{{$item->nama_lengkap}}</option>
+                <option value="{{$item->id_pegawai}}" {{ isset($pegawai->id_pegawai) ? $pegawai->id_pegawai  === $item->id_pegawai ? 'selected' : '' : ''}}>{{$item->nama_lengkap}}</option>
                 @endforeach
             </select>    
-                     
+            <script>
+                document.getElementById('id_pegawai').addEventListener('change', function() {
+                var selectedOption = this.value;
+                window.location.href = "{{ route('hitung-gaji', ['id_pegawai' => '']) }}" + selectedOption;
+                });
+            </script>
               <x-label for="tanggal">{{ __('Tanggal') }} </x-label>
               <x-input id="tanggal" type="date" name="tanggal" :value="old('tanggal', date('Y-m-d'))"
                   required />

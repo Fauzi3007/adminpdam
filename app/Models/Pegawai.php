@@ -39,7 +39,7 @@ class Pegawai extends Model
         return $this->belongsTo(Cabang::class, 'kantor_cabang');
     }
 
-    public function jabatan()
+    public function posisi()
     {
         return $this->belongsTo(Jabatan::class, 'jabatan');
     }

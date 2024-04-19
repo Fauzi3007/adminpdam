@@ -49,7 +49,7 @@ class PencatatanController extends Controller
 
         Pencatatan::create($validated);
 
-        return redirect()->route('pencatatan.index')->with('success', 'Pencatatan updated successfully!');
+        return redirect()->route('pencatatan.index')->with('success', 'Pencatatan Stored successfully!');
         
         
     }

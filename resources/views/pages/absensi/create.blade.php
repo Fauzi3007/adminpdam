@@ -10,17 +10,24 @@
 
         <form action="{{route('absensi.store')}}" method="post">
             @csrf
+            <x-label for="id_pegawai">{{ __('Pegawai') }} </x-label>
+            <select name="id_pegawai" id="id_pegawai" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <option >Pilih Pegawai</option>
+                @foreach($pegawais as $item)
+                <option value="{{$item->id_pegawai}}" {{ isset($pegawai->id_pegawai) ? $pegawai->id_pegawai  === $item->id_pegawai ? 'selected' : '' : ''}}>{{$item->nama_lengkap}}</option>
+                @endforeach
+            </select>    
             <div>
                 <x-label for="tanggal">{{ __('Tanggal') }}</x-label>
                 <x-input id="tanggal" type="date" name="tanggal" :value="old('tanggal')" required />
             </div>
             <div>
                 <x-label for="waktu_masuk">{{ __('Waktu Masuk') }} </x-label>
-                <x-input id="waktu_masuk" type="time" name="waktu_masuk"  :value="old('waktu_masuk')" required />
+                <x-input id="waktu_masuk" type="datetime-local" name="waktu_masuk"    :value="old('waktu_masuk')" required />
             </div>
             <div>
-                <x-label for="waktu_keluar">{{ __('Waktu Masuk') }} </x-label>
-                <x-input id="waktu_keluar" type="time" name="waktu_keluar" :value="old('waktu_keluar')" required />
+                <x-label for="waktu_keluar">{{ __('Waktu Keluar') }} </x-label>
+                <x-input id="waktu_keluar" type="datetime-local" disabled name="waktu_keluar" :value="old('waktu_keluar')" />
             </div>
             <div>
                 <x-label for="status">{{ __('Status') }} </x-label>

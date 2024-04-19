@@ -18,7 +18,7 @@ class PegawaiController extends Controller
     {
         $title = 'Pegawai';
         $actionId = 'pegawai';
-        $header = ['nama_lengkap', 'jenis_kelamin', 'telepon', 'alamat', 'kantor_cabang', 'jabatan', 'gaji'];
+        $header = ['nama_lengkap', 'jenis_kelamin', 'telepon', 'alamat', 'kantor_cabang', 'jabatan', 'gaji_pokok'];
         $data = Pegawai::all();
          
         return view('pages.pegawai.index', compact('title', 'header', 'actionId', 'data'));
@@ -56,7 +56,7 @@ class PegawaiController extends Controller
         ]);
 
 
-        $this->handleFileUpload($request, new Pegawai());
+        $validated['foto'] = $this->handleFileUpload($request, new Pegawai());
         Pegawai::create($validated);
 
 
@@ -89,6 +89,7 @@ class PegawaiController extends Controller
      */
     public function update(Request $request, Pegawai $pegawai)
     {
+        
         $validated = $request->validate([
             'id_user' => 'required|integer',
             'nama_lengkap' => 'required|string|max:50',
@@ -101,13 +102,14 @@ class PegawaiController extends Controller
             'gaji_pokok' => 'required|numeric',
             'kantor_cabang' => 'required|integer',
             'jabatan' => 'required|integer',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|max:2048', 
         ]);
 
-        $this->handleFileUpload($request, $pegawai);
+        $validated['foto'] = $this->handleFileUpload($request, new Pegawai());
         $pegawai->update($validated);
 
-        return redirect()->route('pegawai.index')->with('success', 'Pegawai updated successfully!');
+
+        return redirect()->route('pegawai.index')->with('success', 'Pegawai Updated successfully!');
     }
    
 
@@ -132,11 +134,23 @@ class PegawaiController extends Controller
     protected function handleFileUpload(Request $request, Pegawai $pegawai)
     {
         if ($request->hasFile('foto')) {
+            $oldPhoto = $pegawai->foto;
+    
             $image = $request->file('foto');
             $name = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
+            $destinationPath = public_path('images');
             $image->move($destinationPath, $name);
-            $pegawai->foto = $name;
+    
+            if ($oldPhoto) {
+                $oldPhotoPath = public_path('images/' . $oldPhoto);
+                if (file_exists($oldPhotoPath)) {
+                    unlink($oldPhotoPath);
+                }
+            }
+    
+            return $name;
         }
+        return null;
     }
-}
+    
+}    

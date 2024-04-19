@@ -3,30 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
-use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
-class AbsensiController extends Controller
+class ApiAbsensiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $title = 'Absensi';
-        $actionId = 'absensi';
-        $header = ['id_pegawai','nama_lengkap','jenis_kelamin','telepon','kantor_cabang','jabatan','gaji','foto'];
-        $data = Absensi::all();
-        return view('pages.absensi.index', compact('title','header','actionId','data')); 
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $pegawais = Pegawai::all();
-        return view('pages.absensi.create',compact('pegawais'));
+        $absensi = Absensi::all();
+        return response()->json($absensi);
     }
 
     /**
@@ -45,32 +32,31 @@ class AbsensiController extends Controller
         
        Absensi::create($request->all()); 
 
-        return redirect()->route('absensi.index')->with('success', 'Absensi created successfully!');
+       return response()->json(['message' => 'Absensi created successfully!'], 200);
+    
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Absensi $absensi)
+    public function show(string $id)
     {
-       
-        return view('pages.absensi.show', compact('absensi'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Absensi $absensi)
-    {
-       
-        return view('pages.absensi.edit', compact('absensi'));
+        $absensi = Absensi::find($id);
+        if (!$absensi) {
+            return response()->json(['message' => 'Absensi not found'], 404);
+        }
+        return response()->json($absensi);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Absensi $absensi)
+    public function update(Request $request, string $id)
     {
+        $absensi = Absensi::find($id);
+        if (!$absensi) {
+            return response()->json(['message' => 'Absensi not found'], 404);
+        }
 
         $request->validate([
             'tanggal' => 'required|date',
@@ -83,17 +69,21 @@ class AbsensiController extends Controller
 
         $absensi->update($request->all()); 
 
-        return redirect()->route('absensi.index')->with('success', 'Absensi updated successfully!');
+        return response()->json(['message' => 'Pelanggan updated successfully!'], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Absensi $absensi)
+    public function destroy(string $id)
     {
+        
+        $absensi = Absensi::find($id);
+        if (!$absensi) {
+            return response()->json(['message' => 'Absensi not found'], 404);
+        }   
         $absensi->delete();
+        return response()->json(['message' => 'Pelanggan deleted successfully!'], 200);
 
-        return redirect()->route('absensi.index')->with('success', 'Absensi deleted successfully!');
     }
-    
 }

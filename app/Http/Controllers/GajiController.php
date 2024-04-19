@@ -6,6 +6,7 @@ use App\Models\Absensi;
 use App\Models\Gaji;
 use App\Models\Jabatan;
 use App\Models\Pegawai;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class GajiController extends Controller
@@ -31,46 +32,59 @@ class GajiController extends Controller
         return view('pages.gaji.create',compact('pegawais'));
     }
 
-    public function createPegawai(Pegawai $pegawai)
+    public function createPegawai(Request $request)
     {
+        $pegawai = Pegawai::find($request->id_pegawai);
         $pegawais = Pegawai::all();
         $gaji_pokok = $pegawai->gaji_pokok;
         $jabatan = Jabatan::find($pegawai->jabatan);
-        $tunjangan_jabatan = $jabatan->tunjangan_jabatan;
-        $status = Pegawai::find($pegawai->status_nikah);
-        $anak = Pegawai::find($pegawai->jumlah_anak);
-
-
-        if ($status == 'Menikah' && $anak == 0) {
-            $tunjangan_nikah = 200000;
-            $tunjangan_anak = 0;
-        } else if ($status == 'Menikah' && $anak == 1) {
-            $tunjangan_nikah = 200000;
-            $tunjangan_anak = 100000;
-        }else if ($status == 'Menikah' && $anak == 2) {
-            $tunjangan_nikah = 200000;
-            $tunjangan_anak = 200000;
-        }else if ($status == 'Menikah' && $anak > 2) {
-            $tunjangan_nikah = 200000;
-            $tunjangan_anak = 300000;
-        }else if ($status == 'Belum Menikah' || $status == 'Janda' || $status == 'Duda') {
-            $tunjangan_nikah = 0;
-            $tunjangan_anak = 0;
+        $tunjangan_jabatan =$jabatan->tunjangan_jabatan;
+        $status = $pegawai->status_nikah;
+        $anak = $pegawai->jumlah_anak;
+    
+        if ($status == 'Menikah') {
+            if ($anak == 0) {
+                $tunjangan_nikah = 200000.00;
+                $tunjangan_anak = 0.00;
+            } else if ($anak == 1) {
+                $tunjangan_nikah = 200000.00;
+                $tunjangan_anak = 100000.00;
+            } else if ($anak == 2) {
+                $tunjangan_nikah = 200000.00;
+                $tunjangan_anak = 200000.00;
+            } else if ($anak > 2) {
+                $tunjangan_nikah = 200000.00;
+                $tunjangan_anak = 300000.00;
+            }else if ($anak < 0){
+                $tunjangan_nikah = 0.00;
+                $tunjangan_anak = 0.00;
+            }
+        } else {
+            $tunjangan_nikah = 0.00;
+            $tunjangan_anak = 0.00;
         }
-
-        $absensi = Absensi::where('id_pegawai', $pegawai->id)->whereIn('keterangan', ['Izin', 'Sakit', 'Cuti'])->count()->get();
-
+    
+        $firstDayOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
+        $lastDayOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
+        
+        $absensi = Absensi::where('id_pegawai', $pegawai->id_pegawai)
+            ->whereIn('keterangan', ['Izin', 'Sakit', 'Cuti'])
+            ->whereBetween('tanggal', [$firstDayOfLastMonth, $lastDayOfLastMonth])
+            ->count();       
+        
         if ($absensi > 0) {
-            $potongan = 100000*($absensi->whereIn('keterangan', ['Izin', 'Sakit', 'Cuti'])->count());
-            $pajak = 0.12 * ($gaji_pokok + $tunjangan_jabatan + $tunjangan_nikah + $tunjangan_anak - $potongan);
+            $potongan = 100000 * $absensi;
+            
         } else {
             $potongan = 0;
-            $pajak = 0;
+            
         }
+        $pajak = 0.12 * ($gaji_pokok + $tunjangan_jabatan + $tunjangan_nikah + $tunjangan_anak - $potongan);
         $total_gaji = $gaji_pokok + $tunjangan_jabatan + $tunjangan_nikah + $tunjangan_anak - $potongan - $pajak;
-
-        return view('pages.pegawai.create',compact('pegawais','pegawai','gaji_pokok','tunjangan_jabatan','tunjangan_anak','tunjangan_nikah','potongan','pajak','total_gaji'));
+    
+        return view('pages.gaji.create', compact('pegawais', 'pegawai', 'gaji_pokok', 'tunjangan_jabatan', 'tunjangan_anak', 'tunjangan_nikah', 'potongan', 'pajak', 'total_gaji'));
     }
+    
 
     /**
      * Store a newly created resource in storage.
