@@ -44,7 +44,7 @@ class ApiGajiController extends Controller
      */
     public function show(string $id)
     {
-        $gaji = Gaji::find($id);
+        $gaji = Gaji::where('id_pegawai',$id)->first();
         if (!$gaji) {
             return response()->json(['message' => 'Gaji not found'], 404);
         }

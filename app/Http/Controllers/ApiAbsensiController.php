@@ -26,7 +26,7 @@ class ApiAbsensiController extends Controller
             'waktu_masuk' => 'required',  
             'waktu_keluar' => 'nullable', 
             'status' => 'required|string|max:20',
-            'keterangan' => 'nullable|string|in:Masuk,Izin,Sakit,Cuti',  
+            'keterangan' => 'nullable|string',  
             'id_pegawai' => 'required|integer',
         ]);
         
@@ -63,13 +63,13 @@ class ApiAbsensiController extends Controller
             'waktu_masuk' => 'required',  
             'waktu_keluar' => 'nullable', 
             'status' => 'required|string|max:20',
-            'keterangan' => 'nullable|string|in:Masuk,Izin,Sakit,Cuti',  
+            'keterangan' => 'nullable|string',  
             'id_pegawai' => 'required|integer|exists:pegawais,id_pegawai',
         ]);
 
         $absensi->update($request->all()); 
 
-        return response()->json(['message' => 'Pelanggan updated successfully!'], 200);
+        return response()->json(['message' => 'Absensi updated successfully!'], 200);
     }
 
     /**
@@ -83,7 +83,7 @@ class ApiAbsensiController extends Controller
             return response()->json(['message' => 'Absensi not found'], 404);
         }   
         $absensi->delete();
-        return response()->json(['message' => 'Pelanggan deleted successfully!'], 200);
+        return response()->json(['message' => 'Asbsensi deleted successfully!'], 200);
 
     }
 }
