@@ -39,7 +39,7 @@ class ApiCutiController extends Controller
      */
     public function show(string $id)
     {
-        $cuti = Cuti::find($id);
+        $cuti = Cuti::where('id_pegawai',$id)->first();
         if (!$cuti) {
             return response()->json(['message' => 'Cuti not found'], 404);
         }

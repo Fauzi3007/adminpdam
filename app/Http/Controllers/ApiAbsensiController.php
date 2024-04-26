@@ -41,7 +41,7 @@ class ApiAbsensiController extends Controller
      */
     public function show(string $id)
     {
-        $absensi = Absensi::find($id);
+        $absensi = Absensi::where('id_pegawai',$id)->first();
         if (!$absensi) {
             return response()->json(['message' => 'Absensi not found'], 404);
         }
