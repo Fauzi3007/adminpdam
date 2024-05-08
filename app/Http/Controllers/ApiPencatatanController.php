@@ -33,7 +33,7 @@ class ApiPencatatanController extends Controller
         Pencatatan::create($validated);
 
         return response()->json(['message' => 'Pencatatan created successfully!'], 200);
-        
+
     }
 
     /**
@@ -68,7 +68,7 @@ class ApiPencatatanController extends Controller
             'id_pegawai' => 'required|integer',
         ]);
 
-    
+
         $pencatatan->update($validated);
 
         return response()->json(['message' => 'Pencatatan updated successfully!'], 200);
@@ -79,11 +79,11 @@ class ApiPencatatanController extends Controller
      */
     public function destroy(string $id)
     {
-            
+
             $pencatatan = Pencatatan::find($id);
             if (!$pencatatan) {
                 return response()->json(['message' => 'Pencatatan not found'], 404);
-            }   
+            }
             $pencatatan->delete();
             return response()->json(['message' => 'Pencatatan deleted successfully!'], 200);
 

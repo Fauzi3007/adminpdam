@@ -5,16 +5,16 @@
             // Kode JavaScript untuk pratinjau gambar
             function previewImage(input) {
                 var reader = new FileReader();
-    
+
                 reader.onload = function (e) {
                     var preview = document.getElementById('preview');
                     preview.src = e.target.result;
                     preview.style.display = 'block';
                 };
-    
+
                 reader.readAsDataURL(input.files[0]);
             }
-    
+
             // Menambahkan event listener ke input file
             document.getElementById('foto').onchange = function (e) {
                 previewImage(this);
@@ -29,7 +29,7 @@
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <x-label for="id_user">{{ __('ID Pengguna') }} </x-label>
                 <x-input id="id_user" type="text" name="id_user"   :value="old('id_user',$pegawai->id_user)" required />
-               
+
                 <x-label for="nama_lengkap">{{ __('Nama Lengkap') }}</x-label>
                 <x-input id="nama_lengkap" type="text" name="nama_lengkap" :value="old('nama_lengkap',$pegawai->nama_lengkap)"
                     required />
@@ -58,7 +58,7 @@
                     <option value="Menikah" {{ $pegawai->status_nikah === 'Menikah' ? 'selected' : '' }}>Menikah</option>
                     <option value="Janda" {{ $pegawai->status_nikah === 'Janda' ? 'selected' : '' }}>Janda</option>
                     <option value="Duda" {{ $pegawai->status_nikah === 'Duda' ? 'selected' : '' }}>Duda</option>
-                </select>       
+                </select>
 
                 <x-label for="jumlah_anak">{{ __('Jumlah Anak') }} </x-label>
                 <x-input id="jumlah_anak" type="number" name="jumlah_anak" :value="old('jumlah_anak',$pegawai->jumlah_anak)"
@@ -83,7 +83,7 @@
                 </select>
 
                 <x-label for="foto">{{ __('Foto') }} </x-label>
-                <x-input id="foto" type="file" name="foto" :value="old('foto')"  />
+                <x-input id="foto" type="text" name="foto" :value="old('foto')"  />
                 <img id="preview" src="#" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;" />
             </div>
 

@@ -36,16 +36,16 @@ class ApiPegawaiController extends Controller
             'foto' => 'nullable|string',
             'id_user' => 'required|integer',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-    
-      
+
+
         $pegawai = Pegawai::create($request->all());
         return response()->json(['message' => 'Pegawai created successfully!'], 200);
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -109,5 +109,5 @@ class ApiPegawaiController extends Controller
     }
 
 
-   
+
 }

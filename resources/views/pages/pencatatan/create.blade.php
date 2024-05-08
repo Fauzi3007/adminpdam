@@ -17,19 +17,19 @@
 
               <x-label for="meteran_lama">{{ __('Meteran Lama') }} </x-label>
               <x-input id="meteran_lama" type="text" name="meteran_lama" :value="old('meteran_lama')" required />
-             
+
               <x-label for="meteran_baru">{{ __('Meteran Baru') }} </x-label>
               <x-input id="meteran_baru" type="text" name="meteran_baru" :value="old('meteran_baru')" required />
-              
+
               <x-label for="foto_meteran">{{ __('Foto Meteran') }} </x-label>
-              <x-input id="foto_meteran" type="file" name="foto_meteran" :value="old('foto_meteran')"  />
-             
+              <x-input id="foto_meteran" type="text" name="foto_meteran" :value="old('foto_meteran')"  />
+
               <x-label for="id_pegawai">{{ __('Pegawai') }} </x-label>
               <select name="id_pegawai" id="id_pegawai" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 @foreach($pegawais as $item)
                 <option value="{{$item->id_pegawai}}" {{ old('id_pegawai') === $item->id_pegawai ? 'selected' : '' }}>{{$item->nama_lengkap}}</option>
                 @endforeach
-            </select>  
+            </select>
           </div>
 
           <div class="flex items-center justify-between mt-6 col-span-2">

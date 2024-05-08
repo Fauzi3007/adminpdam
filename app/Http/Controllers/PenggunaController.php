@@ -14,11 +14,9 @@ class PenggunaController extends Controller
     public function index()
     {
 
-        $title = 'Pengguna';
-        $actionId = 'user';
-        $header = ['email','hak_akses'];
-        $data = User::all();
-        return view('pages.pengguna.index', compact('title','header','actionId','data')); 
+
+        $users = User::all();
+        return view('pages.pengguna.index', compact('users'));
     }
 
     /**
@@ -39,7 +37,7 @@ class PenggunaController extends Controller
             'password' => 'required|string',
             'hak_akses' => 'required|string',
         ]);
-        
+
         $validated['password'] = Hash::make($validated['password']);
 
         $penggunas = User::create($validated);
@@ -54,7 +52,7 @@ class PenggunaController extends Controller
     {
         return view('pages.pengguna.show', compact('user'));
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -63,7 +61,7 @@ class PenggunaController extends Controller
     {
         return view('pages.pengguna.edit', compact('user'));
     }
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -78,7 +76,7 @@ class PenggunaController extends Controller
 
         $validated['password'] = Hash::make($validated['password']);
 
-        
+
         $user->update($request->all());
 
         return redirect()->route('user.index')->with('success', 'Pengguna updated successfully!');

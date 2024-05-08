@@ -12,11 +12,9 @@ class CabangController extends Controller
      */
     public function index()
     {
-        $title = 'Cabang';
-        $actionId = 'cabang';
-        $header = ['nama_cabang','latitude_cabang','longitude_cabang'];
-        $data = Cabang::all();
-        return view('pages.cabang.index', compact('title','header','actionId','data')); 
+
+        $cabangs = Cabang::all();
+        return view('pages.cabang.index', compact('cabangs'));
     }
 
     /**
@@ -50,7 +48,7 @@ class CabangController extends Controller
     {
         return view('pages.cabang.show', compact('cabang'));
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -59,7 +57,7 @@ class CabangController extends Controller
     {
         return view('pages.cabang.edit', compact('cabang'));
     }
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -72,7 +70,7 @@ class CabangController extends Controller
             'longitude_cabang' => 'required|string|max:20',
         ]);
 
-        
+
         $cabang->update($validated);
 
         return redirect()->route('cabang.index')->with('success', 'Cabang updated successfully!');
@@ -83,7 +81,7 @@ class CabangController extends Controller
      */
     public function destroy(Cabang $cabang)
     {
-       
+
         $cabang->delete();
         return redirect()->route('cabang.index')->with('success', 'Cabang deleted successfully!');
     }

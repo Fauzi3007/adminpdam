@@ -13,11 +13,9 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $title = 'Jabatan';
-        $actionId = 'jabatan';
-        $header = ['nama_jabatan','tunjangan_jabatan'];
-        $data = Jabatan::all();
-        return view('pages.jabatan.index', compact('title','header','actionId','data')); 
+
+        $jabatans = Jabatan::all();
+        return view('pages.jabatan.index', compact('jabatans'));
     }
 
     /**
@@ -50,7 +48,7 @@ class JabatanController extends Controller
     {
         return view('pages.jabatan.show', compact('jabatan'));
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -59,7 +57,7 @@ class JabatanController extends Controller
     {
         return view('pages.jabatan.edit', compact('jabatan'));
     }
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -75,7 +73,7 @@ class JabatanController extends Controller
 
         return redirect()->route('jabatan.index')->with('success', 'Jabatan updated successfully!');
     }
-    
+
 
     /**
      * Remove the specified resource from storage.

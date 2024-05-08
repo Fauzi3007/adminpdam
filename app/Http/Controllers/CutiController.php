@@ -13,11 +13,9 @@ class CutiController extends Controller
      */
     public function index()
     {
-        $title = 'Cuti';
-        $actionId = 'cuti';
-        $header = ['id_pegawai','tanggal_mulai','tanggal_selesai','keterangan','status'];
-        $data = Cuti::all();
-        return view('pages.cuti.index',compact('title','header','actionId','data'));
+
+        $cutis = Cuti::all();
+        return view('pages.cuti.index',compact('cutis'));
     }
 
     /**
@@ -39,7 +37,7 @@ class CutiController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
             'keterangan' => 'nullable|string',
-            'status' => 'required|string|max:10', 
+            'status' => 'required|string|max:10',
         ]);
 
         Cuti::create($request->all());
@@ -54,7 +52,7 @@ class CutiController extends Controller
     {
         return view('pages.cuti.show', compact('cuti'));
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -76,10 +74,10 @@ class CutiController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
             'keterangan' => 'nullable|string',
-            'status' => 'required|string|max:10', 
+            'status' => 'required|string|max:10',
         ]);
 
-        
+
         $cuti->update($request->all());
 
         return redirect()->route('cuti.index')->with('success', 'Cuti updated successfully!');
@@ -90,7 +88,7 @@ class CutiController extends Controller
      */
     public function destroy(Cuti $cuti)
     {
-        
+
         $cuti->delete();
         return redirect()->route('cuti.index')->with('success', 'Cuti deleted successfully!');
     }

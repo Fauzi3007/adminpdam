@@ -64,7 +64,7 @@
                 </h3>
                 <ul class="mt-3">
                     <!-- Dashboard -->
-               
+
                     <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(in_array(Request::segment(1), ['dashboard'])){{ 'bg-slate-900' }}@endif">
                         <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if(in_array(Request::segment(1), ['dashboard'])){{ 'hover:text-slate-200' }}@endif" href="/dashboard">
                             <div class="flex items-center justify-between">
@@ -72,7 +72,7 @@
                                     <svg class="shrink-0 h-6 w-6" viewBox="0 0 14 14">
                                         <path class="fill-current @if(in_array(Request::segment(1), ['dashboard'])){{ 'text-indigo-500' }}@else{{ 'text-slate-400' }}@endif" fill="#8fbffa" fill-rule="evenodd" d="M1 0a1 1 0 0 0 -1 1v6a1 1 0 0 0 1 1h4a1 1 0 0 0 1 -1V1a1 1 0 0 0 -1 -1H1Zm7 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v2.01a1 1 0 0 1 -1 1H9a1 1 0 0 1 -1 -1V1Zm0 6a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1H9a1 1 0 0 1 -1 -1V7Zm-8 3.99a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1V13a1 1 0 0 1 -1 1H1a1 1 0 0 1 -1 -1v-2.01Z" clip-rule="evenodd" stroke-width="1"></path>
                                     </svg>
-                                    
+
                                     <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Dashboard</span>
                                 </div>
                                 {{-- <!-- Badge -->
@@ -91,7 +91,7 @@
                                         <path class="fill-current @if(in_array(Request::segment(1), ['datamaster'])){{ 'text-indigo-500' }}@else{{ 'text-slate-400' }}@endif" fill="#8fbffa" fill-rule="evenodd" d="M1.5 0.407a1.5 1.5 0 0 0 -1.5 1.5l0 2.925a1.5 1.5 0 0 0 1.5 1.5h11a1.5 1.5 0 0 0 1.5 -1.5l0 -2.925a1.5 1.5 0 0 0 -1.5 -1.5h-11ZM0 9.168a1.5 1.5 0 0 1 1.5 -1.5h11a1.5 1.5 0 0 1 1.5 1.5l0 2.925a1.5 1.5 0 0 1 -1.5 1.5h-11a1.5 1.5 0 0 1 -1.5 -1.5l0 -2.925Z" clip-rule="evenodd" stroke-width="1"></path>
                                         <path class="fill-current @if(in_array(Request::segment(1), ['datamaster'])){{ 'text-indigo-300' }}@else{{ 'text-slate-600' }}@endif" fill="#2859c5" fill-rule="evenodd" d="M3.171 2.245a1.125 1.125 0 1 0 0 2.25 1.125 1.125 0 0 0 0 -2.25ZM2.046 10.63a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1 -2.25 0Zm4.829 -7.26c0 -0.346 0.28 -0.625 0.625 -0.625H11a0.625 0.625 0 1 1 0 1.25H7.5a0.625 0.625 0 0 1 -0.625 -0.625Zm0.625 6.635a0.625 0.625 0 0 0 0 1.25H11a0.625 0.625 0 1 0 0 -1.25H7.5Z" clip-rule="evenodd" stroke-width="1"></path>
                                     </svg>
-                                    
+
                                     <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Data Master</span>
                                 </div>
                                 <!-- Icon -->
@@ -142,7 +142,7 @@
                             </ul>
                         </div>
                     </li>
-                 
+
                     <!-- absensi -->
                     <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(in_array(Request::segment(1), ['absensi'])){{ 'bg-slate-900' }}@endif">
                         <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if(in_array(Request::segment(1), ['absensi'])){{ 'hover:text-slate-200' }}@endif" href="/absensi">
@@ -155,7 +155,7 @@
                                         <path class="fill-current @if(in_array(Request::segment(1), ['absensi'])){{ 'text-indigo-300' }}@else{{ 'text-slate-600' }}@endif" fill="#2859c5" fill-rule="evenodd" d="M6.1288 8.5288C6.4592 8.7645 6.5359 9.2234 6.3003 9.5539L4.9312 11.4688C4.6671 11.8378 4.135 11.8817 3.814 11.5609L2.9928 10.7407C2.5995 10.3339 2.7941 9.6539 3.343 9.5167C3.5889 9.4553 3.8492 9.5249 4.0316 9.7009L4.2393 9.9086L5.1037 8.6983C5.34 8.3686 5.7989 8.2927 6.1288 8.5288Z" clip-rule="evenodd" stroke-width="1"></path>
                                         <path class="fill-current @if(in_array(Request::segment(1), ['absensi'])){{ 'text-indigo-300' }}@else{{ 'text-slate-600' }}@endif" fill="#2859c5" fill-rule="evenodd" d="M6.1288 4.5774C6.4598 4.8132 6.5366 5.2729 6.3003 5.6035L4.9312 7.5194C4.6671 7.8884 4.135 7.9323 3.814 7.6115L2.9928 6.7903C2.6071 6.3763 2.8141 5.7001 3.3654 5.573C3.6034 5.5182 3.853 5.585 4.0316 5.7515L4.2393 5.9583L5.1037 4.7489C5.3394 4.4186 5.7983 4.3418 6.1288 4.5774Z" clip-rule="evenodd" stroke-width="1"></path>
                                     </svg>
-                                    
+
                                     <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Absensi</span>
                                 </div>
                                 {{-- <!-- Badge -->
@@ -173,12 +173,12 @@
                                     <path class="fill-current @if(in_array(Request::segment(1), ['cuti'])){{ 'text-indigo-500' }}@else{{ 'text-slate-400' }}@endif" fill="#8fbffa" fill-rule="evenodd" d="M5.5 2a2 2 0 1 1 -4 0 2 2 0 0 1 4 0Zm0.045 7.97V10H5.5l-0.445 3.562a0.5 0.5 0 0 1 -0.496 0.438H2.44a0.5 0.5 0 0 1 -0.496 -0.438L1.5 10h-1a0.5 0.5 0 0 1 -0.5 -0.5v-1a3.5 3.5 0 0 1 6.9 -0.832A2.632 2.632 0 0 0 5.545 9.97Z" clip-rule="evenodd" stroke-width="1"></path>
                                     <path class="fill-current @if(in_array(Request::segment(1), ['cuti'])){{ 'text-indigo-300' }}@else{{ 'text-slate-600' }}@endif" fill="#2859c5" fill-rule="evenodd" d="M9.677 7.937a0.25 0.25 0 0 1 0.25 -0.25h0.913a0.25 0.25 0 0 1 0.25 0.25v0.651H9.677v-0.65Zm-1.5 0.651v-0.65c0 -0.967 0.784 -1.75 1.75 -1.75h0.913c0.966 0 1.75 0.783 1.75 1.75v0.65c0.763 0 1.381 0.62 1.381 1.383v2.647c0 0.763 -0.619 1.382 -1.382 1.382H8.177a1.382 1.382 0 0 1 -1.382 -1.382V9.97c0 -0.763 0.619 -1.382 1.382 -1.382Z" clip-rule="evenodd" stroke-width="1"></path>
                                 </svg>
-                                
+
                                 <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Cuti</span>
                             </div>
                         </a>
                     </li>
-                    <!-- laporan -->
+                    {{-- <!-- laporan -->
                     <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(in_array(Request::segment(1), ['laporan'])){{ 'bg-slate-900' }}@endif">
                         <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if(in_array(Request::segment(1), ['laporan'])){{ 'hover:text-slate-200' }}@endif" href="/laporan">
                             <div class="flex items-center">
@@ -189,10 +189,10 @@
                                 <span class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Laporan</span>
                             </div>
                         </a>
-                    </li>
-                    
-                    
-                   
+                    </li> --}}
+
+
+
                 </ul>
             </div>
             <!-- More group -->

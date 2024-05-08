@@ -13,11 +13,9 @@ class AbsensiController extends Controller
      */
     public function index()
     {
-        $title = 'Absensi';
-        $actionId = 'absensi';
-        $header = ['id_pegawai','nama_lengkap','jenis_kelamin','telepon','kantor_cabang','jabatan','gaji','foto'];
-        $data = Absensi::all();
-        return view('pages.absensi.index', compact('title','header','actionId','data')); 
+
+        $absensis = Absensi::all();
+        return view('pages.absensi.index', compact('absensis')); 
     }
 
     /**

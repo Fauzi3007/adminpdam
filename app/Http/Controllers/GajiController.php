@@ -16,18 +16,16 @@ class GajiController extends Controller
      */
     public function index()
     {
-        $title = 'Gaji';
-        $actionId = 'gaji';
-        $header = ['tanggal','gaji_pokok','tunjangan_jabatan','tunjangan_anak','tunjangan_nikah','potongan','pajak','total_gaji'];
-        $data = Gaji::all();
-        return view('pages.gaji.index', compact('title','header','actionId','data')); 
+
+        $gajis = Gaji::all();
+        return view('pages.gaji.index', compact('gajis'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {   
+    {
         $pegawais = Pegawai::all();
         return view('pages.gaji.create',compact('pegawais'));
     }
@@ -41,7 +39,7 @@ class GajiController extends Controller
         $tunjangan_jabatan =$jabatan->tunjangan_jabatan;
         $status = $pegawai->status_nikah;
         $anak = $pegawai->jumlah_anak;
-    
+
         if ($status == 'Menikah') {
             if ($anak == 0) {
                 $tunjangan_nikah = 200000.00;
@@ -63,28 +61,28 @@ class GajiController extends Controller
             $tunjangan_nikah = 0.00;
             $tunjangan_anak = 0.00;
         }
-    
+
         $firstDayOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
         $lastDayOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
-        
+
         $absensi = Absensi::where('id_pegawai', $pegawai->id_pegawai)
             ->whereIn('keterangan', ['Izin', 'Sakit', 'Cuti'])
             ->whereBetween('tanggal', [$firstDayOfLastMonth, $lastDayOfLastMonth])
-            ->count();       
-        
+            ->count();
+
         if ($absensi > 0) {
             $potongan = 100000 * $absensi;
-            
+
         } else {
             $potongan = 0;
-            
+
         }
         $pajak = 0.12 * ($gaji_pokok + $tunjangan_jabatan + $tunjangan_nikah + $tunjangan_anak - $potongan);
         $total_gaji = $gaji_pokok + $tunjangan_jabatan + $tunjangan_nikah + $tunjangan_anak - $potongan - $pajak;
-    
+
         return view('pages.gaji.create', compact('pegawais', 'pegawai', 'gaji_pokok', 'tunjangan_jabatan', 'tunjangan_anak', 'tunjangan_nikah', 'potongan', 'pajak', 'total_gaji'));
     }
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -103,7 +101,7 @@ class GajiController extends Controller
             'total_gaji' => 'required|numeric',
         ]);
 
-        
+
         Gaji::create($validated);
 
         return redirect()->route('gaji.index')->with('success', 'Gaji created successfully!');
@@ -116,7 +114,7 @@ class GajiController extends Controller
     {
         return view('pages.gaji.show', compact('gaji'));
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -126,7 +124,7 @@ class GajiController extends Controller
         $pegawais = Pegawai::all();
         return view('pages.gaji.edit', compact('gaji','pegawais'));
     }
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -145,7 +143,7 @@ class GajiController extends Controller
             'total_gaji' => 'required|numeric',
         ]);
 
-        
+
         $gaji->update($validated);
 
         return redirect()->route('gaji.index')->with('success', 'Gaji updated successfully!');
@@ -156,7 +154,7 @@ class GajiController extends Controller
      */
     public function destroy(Gaji $gaji)
     {
-        
+
         $gaji->delete();
         return redirect()->route('gaji.index')->with('success', 'Gaji deleted successfully!');
     }

@@ -27,6 +27,6 @@ class Gaji extends Model
 
     public function pegawai()
     {
-        return $this->belongsTo(Pegawai::class, 'gaji');
+        return $this->belongsTo(Pegawai::class, 'id_pegawai', 'id_pegawai');
     }
 }

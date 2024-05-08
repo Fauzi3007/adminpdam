@@ -13,11 +13,9 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        $title = 'Pelanggan';
-        $actionId = 'pelanggan';
-        $header = ['nomor_pelanggan','nama_pelanggan','alamat','latitude','longitude','lingkup_cabang'];
-        $data = Pelanggan::all();
-        return view('pages.pelanggan.index', compact('title','header','actionId','data')); 
+
+        $pelanggans = Pelanggan::all();
+        return view('pages.pelanggan.index', compact('pelanggans'));
     }
 
     /**
@@ -42,9 +40,9 @@ class PelangganController extends Controller
             'longitude' => 'required|numeric',
             'lingkup_cabang' => 'required|integer',
         ]);
-        
-        
-        Pelanggan::create($validated); 
+
+
+        Pelanggan::create($validated);
 
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan created successfully!');
     }
@@ -56,14 +54,14 @@ class PelangganController extends Controller
     {
         return view('pages.pelanggan.show', compact('pelanggan'));
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Pelanggan $pelanggan)
     {
-       
+
         $cabangs = Cabang::all();
         return view('pages.pelanggan.edit', compact('pelanggan', 'cabangs'));
     }
@@ -81,19 +79,19 @@ class PelangganController extends Controller
             'longitude' => 'required|numeric',
             'lingkup_cabang' => 'required|integer',
         ]);
-        
+
         $pelanggan->update($validated);
 
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan updated successfully!');
     }
-   
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Pelanggan $pelanggan)
     {
-    
+
         $pelanggan->delete();
 
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan deleted successfully!');

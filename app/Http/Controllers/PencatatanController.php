@@ -14,11 +14,9 @@ class PencatatanController extends Controller
      */
     public function index()
     {
-        $title = 'Pencatatan';
-        $actionId = 'pencatatan';
-        $header = ['id_pelanggan','meteran_lama','meteran_baru','tanggal','foto_meteran','id_pegawai'];
-        $data = Pencatatan::all();
-        return view('pages.pencatatan.index', compact('title','header','actionId','data')); 
+
+        $pencatatans = Pencatatan::all();
+        return view('pages.pencatatan.index', compact('pencatatans'));
     }
 
     /**
@@ -50,8 +48,8 @@ class PencatatanController extends Controller
         Pencatatan::create($validated);
 
         return redirect()->route('pencatatan.index')->with('success', 'Pencatatan Stored successfully!');
-        
-        
+
+
     }
 
     /**
@@ -61,7 +59,7 @@ class PencatatanController extends Controller
     {
         return view('pages.pencatatan.show', compact('pencatatan'));
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -89,7 +87,7 @@ class PencatatanController extends Controller
             'id_pegawai' => 'required|integer',
         ]);
 
-    
+
         $pencatatan->update($validated);
 
         return redirect()->route('pencatatan.index')->with('success', 'Pencatatan updated successfully!');
@@ -100,7 +98,7 @@ class PencatatanController extends Controller
      */
     public function destroy(Pencatatan $pencatatan)
     {
-       
+
         $pencatatan->delete();
 
         return redirect()->route('pencatatan.index')->with('success', 'Pencatatan deleted successfully!');
