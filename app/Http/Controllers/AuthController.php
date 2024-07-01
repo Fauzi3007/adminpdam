@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -95,7 +96,13 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+        $id_user = Auth::user()->id;
+        $id_pegawai = Pegawai::where('id_user', $id_user)->first()->id_pegawai;
+        $hak_akses = Auth::user()->hak_akses;
         return response()->json([
+            'id_user' => $id_user,
+            'id_pegawai' => $id_pegawai,
+            'hak_akses' => $hak_akses,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60

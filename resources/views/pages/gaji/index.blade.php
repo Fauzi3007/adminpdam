@@ -82,7 +82,7 @@
                                                 </div>
                                             </td>
                                             <td class="p-2 whitespace-nowrap">
-                                                <div class="text-left">{{ $item->pegawai->nama_lengkap }}</div>
+                                                <div class="text-left">{{ $item->pegawai->nama_lengkap ?? '' }}</div>
                                             </td>
                                             <td class="p-2 whitespace-nowrap">
                                                 <div class="text-left">{{ $item->tanggal }}</div>

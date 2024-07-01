@@ -48,10 +48,27 @@ class ApiGajiController extends Controller
      */
     public function show(string $id)
     {
-        $gaji = Gaji::where('id_pegawai',$id)->first();
+        $gaji = Gaji::where('id_pegawai', $id)
+            ->whereMonth('tanggal', Carbon::now()->month)
+            ->get();
         if (!$gaji) {
             return response()->json(['message' => 'Gaji not found'], 404);
         }
+        return response()->json($gaji);
+    }
+
+    /**
+     * Filter gaji per bulan.
+     */
+    public function filterByMonth(Request $request,String $id)
+    {
+        $month = $request->input('month');
+        $year = $request->input('year');
+
+        $gaji = Gaji::where('id_pegawai', $id)->whereMonth('tanggal', $month)
+            ->whereYear('tanggal', $year)
+            ->get();
+
         return response()->json($gaji);
     }
 

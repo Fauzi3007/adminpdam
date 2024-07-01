@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cuti;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
 class ApiCutiController extends Controller
@@ -16,6 +17,14 @@ class ApiCutiController extends Controller
         return response()->json($cuti);
     }
 
+    public function persetujuanCuti(string $id)
+    {
+        $boss = Pegawai::where('id_pegawai', $id)->select('kantor_cabang')->first();
+        $pegawai = Pegawai::where('kantor_cabang', $boss->kantor_cabang)->select('id_pegawai')->get();
+        $cuti = Cuti::whereIn('id_pegawai', $pegawai->pluck('id_pegawai'))->get();
+        return response()->json($cuti);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -26,7 +35,7 @@ class ApiCutiController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
             'keterangan' => 'nullable|string',
-            'status' => 'required|string|max:10', 
+            'status' => 'required|string|max:10',
         ]);
 
         Cuti::create($request->all());
@@ -55,16 +64,16 @@ class ApiCutiController extends Controller
         if (!$cuti) {
             return response()->json(['message' => 'Cuti not found'], 404);
         }
-        
+
         $request->validate([
             'id_pegawai' => 'required|integer',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
             'keterangan' => 'nullable|string',
-            'status' => 'required|string|max:10', 
+            'status' => 'required|string|max:10',
         ]);
 
-        
+
         $cuti->update($request->all());
 
         return response()->json(['message' => 'Absensi updated successfully!'], 200);

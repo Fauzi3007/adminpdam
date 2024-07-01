@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pencatatan;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -57,8 +58,8 @@ class ApiPencatatanController extends Controller
      */
     public function show(string $id)
     {
-        $idPegawai = User::join('pegawais', 'id_user', '=', 'id')->where('id', $id)->select('id');
-        $pencatatan = Pencatatan::where('id_pegawai', $idPegawai);
+
+        $pencatatan = Pencatatan::where('id_pegawai', $id)->whereMonth('tanggal', Carbon::now()->month)->get();
         if (!$pencatatan) {
             return response()->json(['message' => 'Pencatatan not found'], 404);
         }

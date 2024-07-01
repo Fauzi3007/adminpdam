@@ -19,6 +19,16 @@ class ApiPegawaiController extends Controller
         return response()->json($pegawai);
     }
 
+    public function filterByCabang(Request $request, string $id)
+    {
+        $request->validate([
+            'id_cabang' => 'required|integer',
+        ]);
+
+        $pegawai = Pegawai::where('kantor_cabang', $request->id_cabang)->get();
+        return response()->json($pegawai);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -44,7 +54,7 @@ class ApiPegawaiController extends Controller
         }
 
         // Handle file upload
-        $photoName = $this->handleFileUpload($request,new Pegawai());
+        $photoName = $this->handleFileUpload($request, new Pegawai());
 
         // Create Pegawai with validated data
         $pegawaiData = $request->all();
@@ -63,8 +73,26 @@ class ApiPegawaiController extends Controller
      */
     public function show(string $id)
     {
-        $pegawai = Pegawai::find($id);
-        return response()->json($pegawai);
+        $pegawai = Pegawai::where('id_pegawai', $id)->first();
+        if (!$pegawai) {
+            return response()->json(['error' => 'Pegawai not found'], 404);
+        }
+
+
+        return response()->json($pegawai, 200);
+    }
+
+    public function jabatanDanCabang(string $id)
+    {
+        $pegawai = Pegawai::where('id_pegawai', $id)->first();
+        if (!$pegawai) {
+            return response()->json(['error' => 'Pegawai not found'], 404);
+        }
+
+        $jabatan = $pegawai->jabatan->nama_jabatan;
+        $cabang = $pegawai->cabang->nama_cabang;
+
+        return response()->json(['nama_jabatan' => $jabatan, 'nama_cabang' => $cabang], 200);
     }
 
     /**
@@ -91,7 +119,7 @@ class ApiPegawaiController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $pegawai = Pegawai::where('id_user', $id)->first();
+        $pegawai = Pegawai::where('id_pegawai', $id)->first();
 
         if (!$pegawai) {
             return response()->json(['error' => 'Pegawai not found'], 404);
