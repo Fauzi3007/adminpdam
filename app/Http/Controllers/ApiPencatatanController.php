@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pencatatan;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ApiPencatatanController extends Controller
 {
@@ -21,7 +25,7 @@ class ApiPencatatanController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'id_pelanggan' => 'required|integer',
             'meteran_lama' => 'required|integer',
             'meteran_baru' => 'required|integer',
@@ -30,10 +34,22 @@ class ApiPencatatanController extends Controller
             'id_pegawai' => 'required|integer',
         ]);
 
-        Pencatatan::create($validated);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
 
-        return response()->json(['message' => 'Pencatatan created successfully!'], 200);
+        // Handle file upload
+        $photoName = $this->handleFileUpload($request,new Pencatatan());
 
+        // Create Pegawai with validated data
+        $pencatatanData = $request->all();
+        if ($photoName) {
+            $pencatatanData['foto_meteran'] = $photoName;
+        }
+
+        $pencatatan = Pencatatan::create($pencatatanData);
+
+        return response()->json(['message' => 'Pencatatan created successfully!','pencatatan'=> $pencatatan], 201);
     }
 
     /**
@@ -41,7 +57,8 @@ class ApiPencatatanController extends Controller
      */
     public function show(string $id)
     {
-        $pencatatan = Pencatatan::find($id);
+        $idPegawai = User::join('pegawais', 'id_user', '=', 'id')->where('id', $id)->select('id');
+        $pencatatan = Pencatatan::where('id_pegawai', $idPegawai);
         if (!$pencatatan) {
             return response()->json(['message' => 'Pencatatan not found'], 404);
         }
@@ -59,7 +76,7 @@ class ApiPencatatanController extends Controller
             return response()->json(['message' => 'Pencatatan not found'], 404);
         }
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'id_pelanggan' => 'required|integer',
             'meteran_lama' => 'required|integer',
             'meteran_baru' => 'required|integer',
@@ -68,10 +85,22 @@ class ApiPencatatanController extends Controller
             'id_pegawai' => 'required|integer',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
 
-        $pencatatan->update($validated);
+        // Handle file upload
+        $photoName = $this->handleFileUpload($request,new Pencatatan());
 
-        return response()->json(['message' => 'Pencatatan updated successfully!'], 200);
+        // Create Pegawai with validated data
+        $pencatatanData = $request->all();
+        if ($photoName) {
+            $pencatatanData['foto_meteran'] = $photoName;
+        }
+
+        $pencatatan->update($pencatatanData);
+
+        return response()->json(['message' => 'Pencatatan updated successfully!','pencatatan'=>$pencatatan], 200);
     }
 
     /**
@@ -80,12 +109,42 @@ class ApiPencatatanController extends Controller
     public function destroy(string $id)
     {
 
-            $pencatatan = Pencatatan::find($id);
-            if (!$pencatatan) {
-                return response()->json(['message' => 'Pencatatan not found'], 404);
-            }
-            $pencatatan->delete();
-            return response()->json(['message' => 'Pencatatan deleted successfully!'], 200);
+        $pencatatan = Pencatatan::find($id);
+        if (!$pencatatan) {
+            return response()->json(['message' => 'Pencatatan not found'], 404);
+        }
 
+        // Delete the photo if exists
+        $this->deleteFile($pencatatan->foto_meteran);
+        $pencatatan->delete();
+        return response()->json(['message' => 'Pencatatan deleted successfully!'], 200);
+    }
+
+    protected function handleFileUpload(Request $request, Pencatatan $pencatatan)
+    {
+        if ($request->hasFile('foto_meteran')) {
+            $oldPhoto = $pencatatan->foto_meteran;
+
+            $image = $request->file('foto_meteran');
+            $path = $image->store('public/images'); // Store the image in the 'public/images' directory
+            $name = basename($path); // Get the filename
+
+            if ($oldPhoto) {
+                $this->deleteFile($oldPhoto);
+            }
+
+            return $name;
+        }
+        return null;
+    }
+
+    protected function deleteFile($filename)
+    {
+        $filePath = 'public/images/' . $filename;
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+        } else {
+            Log::warning('File not found: ' . $filePath);
+        }
     }
 }

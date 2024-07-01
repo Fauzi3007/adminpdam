@@ -6,6 +6,8 @@ use App\Models\Pegawai;
 use App\Models\Pelanggan;
 use App\Models\Pencatatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PencatatanController extends Controller
 {
@@ -39,13 +41,19 @@ class PencatatanController extends Controller
             'id_pelanggan' => 'required|integer',
             'meteran_lama' => 'required|integer',
             'meteran_baru' => 'required|integer',
-            'foto_meteran' => 'nullable|string|max:100',
+            'foto_meteran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'tanggal' => 'required|date',
             'id_pegawai' => 'required|integer',
         ]);
 
 
-        Pencatatan::create($validated);
+        $pencatatan = Pencatatan::create($validated);
+
+        $photoName = $this->handleFileUpload($request, $pencatatan);
+        if ($photoName) {
+            $pencatatan->foto_meteran = $photoName;
+            $pencatatan->save();
+        }
 
         return redirect()->route('pencatatan.index')->with('success', 'Pencatatan Stored successfully!');
 
@@ -82,13 +90,20 @@ class PencatatanController extends Controller
             'id_pelanggan' => 'required|integer',
             'meteran_lama' => 'required|integer',
             'meteran_baru' => 'required|integer',
-            'foto_meteran' => 'nullable|string|max:100',
+            'foto_meteran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'tanggal' => 'required|date',
             'id_pegawai' => 'required|integer',
         ]);
 
 
         $pencatatan->update($validated);
+
+        $photoName = $this->handleFileUpload($request, $pencatatan);
+        if ($photoName) {
+            $pencatatan->foto_meteran = $photoName;
+            $pencatatan->save();
+        }
+
 
         return redirect()->route('pencatatan.index')->with('success', 'Pencatatan updated successfully!');
     }
@@ -102,5 +117,33 @@ class PencatatanController extends Controller
         $pencatatan->delete();
 
         return redirect()->route('pencatatan.index')->with('success', 'Pencatatan deleted successfully!');
+    }
+
+    protected function handleFileUpload(Request $request, Pencatatan $pencatatan)
+    {
+        if ($request->hasFile('foto_meteran')) {
+            $oldPhoto = $pencatatan->foto_meteran;
+
+            $image = $request->file('foto_meteran');
+            $path = $image->store('public/images'); // Store the image in the 'public/images' directory
+            $name = basename($path); // Get the filename
+
+            if ($oldPhoto) {
+                $this->deleteFile($oldPhoto);
+            }
+
+            return $name;
+        }
+        return null;
+    }
+
+    protected function deleteFile($filename)
+    {
+        $filePath = 'public/images/' . $filename;
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+        } else {
+            Log::warning('File not found: ' . $filePath);
+        }
     }
 }

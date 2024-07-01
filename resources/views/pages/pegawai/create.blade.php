@@ -82,7 +82,7 @@
                 </select>
 
                 <x-label for="foto">{{ __('Foto') }} </x-label>
-                <x-input id="foto" type="text" name="foto" :value="old('foto')"  />
+                <x-input id="foto" type="file" name="foto" :value="old('foto')"  />
                 <img id="preview" src="#" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;" />
             </div>
 

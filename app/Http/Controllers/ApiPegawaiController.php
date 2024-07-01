@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ApiPegawaiController extends Controller
 {
@@ -33,7 +35,7 @@ class ApiPegawaiController extends Controller
             'kantor_cabang' => 'required|integer',
             'jabatan' => 'required|integer',
             'gaji_pokok' => 'required|numeric',
-            'foto' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'id_user' => 'required|integer',
         ]);
 
@@ -41,9 +43,18 @@ class ApiPegawaiController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
+        // Handle file upload
+        $photoName = $this->handleFileUpload($request,new Pegawai());
 
-        $pegawai = Pegawai::create($request->all());
-        return response()->json(['message' => 'Pegawai created successfully!'], 200);
+        // Create Pegawai with validated data
+        $pegawaiData = $request->all();
+        if ($photoName) {
+            $pegawaiData['foto'] = $photoName;
+        }
+
+        $pegawai = Pegawai::create($pegawaiData);
+
+        return response()->json(['message' => 'Pegawai created successfully!', 'pegawai' => $pegawai], 201);
     }
 
 
@@ -60,42 +71,45 @@ class ApiPegawaiController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-{
-    // Validate the incoming request data
-    $validator = Validator::make($request->all(), [
-        'nama_lengkap' => 'required|string|max:50',
-        'jenis_kelamin' => 'required|string',
-        'tgl_lahir' => 'required|date',
-        'telepon' => 'required|string|max:15',
-        'alamat' => 'required|string',
-        'status_nikah' => 'required|string',
-        'jumlah_anak' => 'required|integer',
-        'gaji_pokok' => 'required|numeric',
-        'kantor_cabang' => 'required|integer',
-        'jabatan' => 'required|integer',
-        'foto' => 'nullable|string',
-        'id_user' => 'required|integer',
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+            'nama_lengkap' => 'required|string|max:50',
+            'jenis_kelamin' => 'required|string',
+            'tgl_lahir' => 'required|date',
+            'telepon' => 'required|string|max:15',
+            'alamat' => 'required|string',
+            'status_nikah' => 'required|string',
+            'jumlah_anak' => 'required|integer',
+            'gaji_pokok' => 'required|numeric',
+            'kantor_cabang' => 'required|integer',
+            'jabatan' => 'required|integer',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'id_user' => 'required|integer',
+        ]);
 
-    // If validation fails, return the validation errors
-    if ($validator->fails()) {
-        return response()->json($validator->errors(), 400);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $pegawai = Pegawai::where('id_user', $id)->first();
+
+        if (!$pegawai) {
+            return response()->json(['error' => 'Pegawai not found'], 404);
+        }
+
+        // Handle file upload
+        $photoName = $this->handleFileUpload($request, $pegawai);
+
+        // Update Pegawai with validated data
+        $pegawaiData = $request->all();
+        if ($photoName) {
+            $pegawaiData['foto'] = $photoName;
+        }
+
+        $pegawai->update($pegawaiData);
+
+        return response()->json(['message' => 'Pegawai updated successfully!', 'pegawai' => $pegawai], 200);
     }
-
-    // Find the Pegawai model by ID
-    $pegawai = Pegawai::find($id);
-
-    // If the Pegawai model is not found, return a 404 response
-    if (!$pegawai) {
-        return response()->json(['error' => 'Pegawai not found'], 404);
-    }
-
-    // Update the Pegawai model with the request data
-    $pegawai->update($request->all());
-
-    // Return a success message
-    return response()->json(['message' => 'Pegawai updated successfully!'], 200);
-}
 
 
     /**
@@ -104,10 +118,46 @@ class ApiPegawaiController extends Controller
     public function destroy(string $id)
     {
         $pegawai = Pegawai::find($id);
+        if (!$pegawai) {
+            return response()->json(['error' => 'Pegawai not found'], 404);
+        }
+
+        // Delete the photo if exists
+        $this->deleteFile($pegawai->foto);
+
         $pegawai->delete();
+
         return response()->json(['message' => 'Pegawai deleted successfully!'], 200);
     }
 
+    /**
+     * Handle file upload for Pegawai.
+     */
+    protected function handleFileUpload(Request $request, Pegawai $pegawai)
+    {
+        if ($request->hasFile('foto')) {
+            $oldPhoto = $pegawai->foto;
 
+            $image = $request->file('foto');
+            $path = $image->store('public/images'); // Store the image in the 'public/images' directory
+            $name = basename($path); // Get the filename
 
+            if ($oldPhoto) {
+                $this->deleteFile($oldPhoto);
+            }
+
+            return $name;
+        }
+        return null;
+    }
+
+    protected function deleteFile($filename)
+    {
+        $filePath = 'public/images/' . $filename;
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+        } else {
+            Log::warning('File not found: ' . $filePath);
+        }
+    }
 }

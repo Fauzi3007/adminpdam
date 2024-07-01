@@ -19,6 +19,7 @@ class Cuti extends Model
         'tanggal_selesai',
         'keterangan',
         'status',
+        'bukti_foto'
     ];
 
     public function pegawai()

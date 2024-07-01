@@ -7,7 +7,9 @@ use App\Models\Gaji;
 use App\Models\Jabatan;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class PegawaiController extends Controller
 {
@@ -50,12 +52,17 @@ class PegawaiController extends Controller
             'gaji_pokok' => 'required|numeric',
             'kantor_cabang' => 'required|integer',
             'jabatan' => 'required|integer',
-            'foto' => 'nullable|string|max:100',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        $pegawai = Pegawai::create($validated);
 
-        Pegawai::create($validated);
-
+        // Handle file upload
+        $photoName = $this->handleFileUpload($request, $pegawai);
+        if ($photoName) {
+            $pegawai->foto = $photoName;
+            $pegawai->save();
+        }
 
         return redirect()->route('pegawai.index')->with('success', 'Pegawai created successfully!');
     }
@@ -77,7 +84,7 @@ class PegawaiController extends Controller
         $cabangs = Cabang::all();
         $jabatans = Jabatan::all();
         $gajis = Gaji::all();
-        return view('pages.pegawai.edit', compact('pegawai','cabangs','jabatans','gajis'));
+        return view('pages.pegawai.edit', compact('pegawai', 'cabangs', 'jabatans', 'gajis'));
     }
 
 
@@ -86,7 +93,6 @@ class PegawaiController extends Controller
      */
     public function update(Request $request, Pegawai $pegawai)
     {
-
         $validated = $request->validate([
             'id_user' => 'required|integer',
             'nama_lengkap' => 'required|string|max:50',
@@ -99,13 +105,19 @@ class PegawaiController extends Controller
             'gaji_pokok' => 'required|numeric',
             'kantor_cabang' => 'required|integer',
             'jabatan' => 'required|integer',
-            'foto' => 'nullable|string|max:100',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $pegawai->update($validated);
 
+        // Handle file upload
+        $photoName = $this->handleFileUpload($request, $pegawai);
+        if ($photoName) {
+            $pegawai->foto = $photoName;
+            $pegawai->save();
+        }
 
-        return redirect()->route('pegawai.index')->with('success', 'Pegawai Updated successfully!');
+        return redirect()->route('pegawai.index')->with('success', 'Pegawai updated successfully!');
     }
 
 
@@ -133,15 +145,11 @@ class PegawaiController extends Controller
             $oldPhoto = $pegawai->foto;
 
             $image = $request->file('foto');
-            $name = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('images');
-            $image->move($destinationPath, $name);
+            $path = $image->store('public/images'); // Store the image in the 'public/images' directory
+            $name = basename($path); // Get the filename
 
             if ($oldPhoto) {
-                $oldPhotoPath = public_path('images/' . $oldPhoto);
-                if (file_exists($oldPhotoPath)) {
-                    unlink($oldPhotoPath);
-                }
+                $this->deleteFile($oldPhoto);
             }
 
             return $name;
@@ -149,4 +157,13 @@ class PegawaiController extends Controller
         return null;
     }
 
+    protected function deleteFile($filename)
+    {
+        $filePath = 'public/images/' . $filename;
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+        } else {
+            Log::warning('File not found: ' . $filePath);
+        }
+    }
 }

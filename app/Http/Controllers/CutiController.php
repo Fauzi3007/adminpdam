@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cuti;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class CutiController extends Controller
 {
@@ -38,13 +40,20 @@ class CutiController extends Controller
             'tanggal_selesai' => 'required|date',
             'keterangan' => 'nullable|string',
             'status' => 'required|string|max:10',
+            'bukti_foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        Cuti::create($request->all());
+        $cutiData = $request->all();
+
+        // Handle file upload
+        if ($request->hasFile('bukti_foto')) {
+            $cutiData['bukti_foto'] = $this->handleFileUpload($request, new Cuti());
+        }
+
+        Cuti::create($cutiData);
 
         return redirect()->route('cuti.index')->with('success', 'Cuti created successfully!');
     }
-
     /**
      * Display the specified resource.
      */
@@ -75,10 +84,19 @@ class CutiController extends Controller
             'tanggal_selesai' => 'required|date',
             'keterangan' => 'nullable|string',
             'status' => 'required|string|max:10',
+            'bukti_foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        $cutiData = $request->all();
 
-        $cuti->update($request->all());
+        // Handle file upload
+        if ($request->hasFile('bukti_foto')) {
+            // Delete the old photo if it exists
+            $this->deleteFile($cuti->bukti_foto);
+            $cutiData['bukti_foto'] = $this->handleFileUpload($request, $cuti);
+        }
+
+        $cuti->update($cutiData);
 
         return redirect()->route('cuti.index')->with('success', 'Cuti updated successfully!');
     }
@@ -88,8 +106,41 @@ class CutiController extends Controller
      */
     public function destroy(Cuti $cuti)
     {
+        // Delete the photo if it exists
+        $this->deleteFile($cuti->bukti_foto);
 
         $cuti->delete();
         return redirect()->route('cuti.index')->with('success', 'Cuti deleted successfully!');
+    }
+
+    /**
+     * Handle file upload for Cuti.
+     */
+    protected function handleFileUpload(Request $request, Cuti $cuti)
+    {
+        if ($request->hasFile('bukti_foto')) {
+            $oldPhoto = $cuti->bukti_foto;
+
+            $image = $request->file('bukti_foto');
+            $path = $image->store('public/images'); // Store the image in the 'public/images' directory
+            $name = basename($path); // Get the filename
+
+            if ($oldPhoto) {
+                $this->deleteFile($oldPhoto);
+            }
+
+            return $name;
+        }
+        return null;
+    }
+
+    protected function deleteFile($filename)
+    {
+        $filePath = 'public/images/' . $filename;
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+        } else {
+            Log::warning('File not found: ' . $filePath);
+        }
     }
 }
