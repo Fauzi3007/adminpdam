@@ -27,7 +27,7 @@
             @csrf
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <x-label for="id_user">{{ __('ID Pengguna') }} </x-label>
-                <x-input id="id_user" type="text" name="id_user"   :value="old('id_user')" required />
+                <x-input id="id_user" type="text" name="id_user"   :value="old('id_user')" required/>
 
                 <x-label for="nama_lengkap">{{ __('Nama Lengkap') }}</x-label>
                 <x-input id="nama_lengkap" type="text" name="nama_lengkap" :value="old('nama_lengkap')"

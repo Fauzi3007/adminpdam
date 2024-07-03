@@ -28,7 +28,7 @@
             @csrf
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <x-label for="id_user">{{ __('ID Pengguna') }} </x-label>
-                <x-input id="id_user" type="text" name="id_user"   :value="old('id_user',$pegawai->id_user)" required />
+                <x-input id="id_user" readonly type="text" name="id_user"   :value="old('id_user',$pegawai->id_user)" required />
 
                 <x-label for="nama_lengkap">{{ __('Nama Lengkap') }}</x-label>
                 <x-input id="nama_lengkap" type="text" name="nama_lengkap" :value="old('nama_lengkap',$pegawai->nama_lengkap)"
@@ -84,7 +84,8 @@
 
                 <x-label for="foto">{{ __('Foto') }} </x-label>
                 <x-input id="foto" type="file" name="foto" :value="old('foto')"  />
-                <img id="preview" src="#" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;" />
+                <img id="preview" src="" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;" />
+                <img id="old" src="{{ asset('storage/images/' . $pegawai->foto) }}" alt="old" style="max-width: 200px; max-height: 200px;" />
             </div>
 
             <div class="flex items-center justify-between mt-6 col-span-2">

@@ -18,7 +18,6 @@ class Pegawai extends Model
         'jenis_kelamin',
         'tgl_lahir',
         'telepon',
-        'email',
         'alamat',
         'status_nikah',
         'jumlah_anak',
@@ -31,7 +30,7 @@ class Pegawai extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id');
     }
 
     public function kantorCabang()

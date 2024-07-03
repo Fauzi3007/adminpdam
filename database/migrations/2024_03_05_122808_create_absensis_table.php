@@ -16,8 +16,8 @@ return new class extends Migration
             $table->date('tanggal');
             $table->timestamp('waktu_masuk');
             $table->timestamp('waktu_keluar')->nullable();
-            $table->string('status', 20);
-            $table->enum('keterangan', ['Masuk', 'Izin', 'Sakit', 'Cuti']);
+            $table->string('status',20);
+            $table->string('keterangan',100);
             $table->unsignedInteger('id_pegawai')->constrained(
                 table: 'pegawais', column:'id_pegawai',indexName: 'pegawaiForeign'
             );

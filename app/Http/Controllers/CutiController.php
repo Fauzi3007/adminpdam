@@ -34,7 +34,7 @@ class CutiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'id_pegawai' => 'required|integer',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
@@ -43,14 +43,15 @@ class CutiController extends Controller
             'bukti_foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $cutiData = $request->all();
+        $cuti = Cuti::create($validated);
 
         // Handle file upload
-        if ($request->hasFile('bukti_foto')) {
-            $cutiData['bukti_foto'] = $this->handleFileUpload($request, new Cuti());
+        $photoName = $this->handleFileUpload($request, $cuti);
+        if ($photoName) {
+            $cuti->bukti_foto = $photoName;
+            $cuti->save();
         }
 
-        Cuti::create($cutiData);
 
         return redirect()->route('cuti.index')->with('success', 'Cuti created successfully!');
     }
@@ -78,7 +79,7 @@ class CutiController extends Controller
      */
     public function update(Request $request, Cuti $cuti)
     {
-        $request->validate([
+        $validated = $request->validate([
             'id_pegawai' => 'required|integer',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
@@ -87,16 +88,14 @@ class CutiController extends Controller
             'bukti_foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $cutiData = $request->all();
+        $cuti->update($validated);
 
         // Handle file upload
-        if ($request->hasFile('bukti_foto')) {
-            // Delete the old photo if it exists
-            $this->deleteFile($cuti->bukti_foto);
-            $cutiData['bukti_foto'] = $this->handleFileUpload($request, $cuti);
+        $photoName = $this->handleFileUpload($request, $cuti);
+        if ($photoName) {
+            $cuti->bukti_foto = $photoName;
+            $cuti->save();
         }
-
-        $cuti->update($cutiData);
 
         return redirect()->route('cuti.index')->with('success', 'Cuti updated successfully!');
     }

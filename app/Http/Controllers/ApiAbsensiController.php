@@ -24,7 +24,7 @@ class ApiAbsensiController extends Controller
     {
         $request->validate([
             'tanggal' => 'required|date',
-            'waktu_masuk' => 'required',
+            'waktu_masuk' => 'nullable',
             'waktu_keluar' => 'nullable',
             'status' => 'required|string|max:20',
             'keterangan' => 'nullable|string',
@@ -42,7 +42,7 @@ class ApiAbsensiController extends Controller
     public function show(string $id)
     {
         $absensi = Absensi::where('id_pegawai', $id)
-            ->whereMonth('tanggal', Carbon::now()->month)
+            // ->whereMonth('tanggal', Carbon::now()->month)
             ->get();
         if (!$absensi) {
             return response()->json(['message' => 'Absensi not found'], 404);
@@ -91,7 +91,8 @@ class ApiAbsensiController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
 
-        $absensi = Absensi::where('id_pegawai', $id)->whereMonth('tanggal', $month)
+        $absensi = Absensi::where('id_pegawai', $id)
+        ->whereMonth('tanggal', $month)
             ->whereYear('tanggal', $year)
             ->get();
 
@@ -132,7 +133,7 @@ class ApiAbsensiController extends Controller
 
         $request->validate([
             'tanggal' => 'required|date',
-            'waktu_masuk' => 'required',
+            'waktu_masuk' => 'nullable',
             'waktu_keluar' => 'nullable',
             'status' => 'required|string|max:20',
             'keterangan' => 'nullable|string',

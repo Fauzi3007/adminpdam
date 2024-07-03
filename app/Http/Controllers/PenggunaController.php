@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pegawai;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 
 class PenggunaController extends Controller
@@ -41,8 +44,24 @@ class PenggunaController extends Controller
         $validated['password'] = Hash::make($validated['password']);
 
         $penggunas = User::create($validated);
+        Pegawai::create([
+            'id_user' => $penggunas->id,
+            'nama_lengkap' => '',
+            'jenis_kelamin' => '',
+            'tgl_lahir' => Carbon::now(),
+            'telepon' => '',
+            'alamat' => '',
+            'status_nikah' => '',
+            'jumlah_anak' => 0,
+            'gaji_pokok' => 0,
+            'kantor_cabang' => 0,
+            'jabatan' => 0,
+            'foto' => '',
+        ]);
 
-        return redirect()->route('user.index')->with('success', 'Pengguna created successfully!');
+        $pegawai = Pegawai::where('id_user', $penggunas->id)->first();
+
+        return redirect()->route('pegawai.edit',['pegawai'=>$pegawai->id_pegawai] )->with('success', 'Pengguna created successfully!');
     }
 
     /**
@@ -87,6 +106,7 @@ class PenggunaController extends Controller
      */
     public function destroy(User $user)
     {
+        Pegawai::where('id_user', $user->id)->delete();
         $user->delete();
 
         return redirect()->route('user.index')->with('success', 'Pengguna deleted successfully!');

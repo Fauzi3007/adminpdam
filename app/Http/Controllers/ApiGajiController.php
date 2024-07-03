@@ -149,7 +149,7 @@ class ApiGajiController extends Controller
         $lastDayOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
 
         $absensi = Absensi::where('id_pegawai', $pegawai->id)
-            ->whereIn('keterangan', ['Izin', 'Sakit', 'Cuti'])
+            ->whereIn('status', ['Izin', 'Sakit'])
             ->whereBetween('tanggal', [$firstDayOfLastMonth, $lastDayOfLastMonth])
             ->count();
 

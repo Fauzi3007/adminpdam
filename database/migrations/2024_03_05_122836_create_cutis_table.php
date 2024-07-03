@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('tanggal_selesai');
             $table->string('keterangan', 50);
             $table->string('status', 10);
+            $table->string('bukti_foto', 50)->nullable();
             $table->timestamps();
 
         });

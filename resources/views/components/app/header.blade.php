@@ -4,7 +4,7 @@
 
             <!-- Header: Left side -->
             <div class="flex">
-                
+
                 <!-- Hamburger button -->
                 <button
                     class="text-slate-500 hover:text-slate-600 lg:hidden"
@@ -25,17 +25,17 @@
             <!-- Header: Right side -->
             <div class="flex items-center space-x-3">
 
-                <!-- Search Button with Modal -->
+                {{-- <!-- Search Button with Modal -->
                 <x-modal-search />
 
                 <!-- Notifications button -->
                 <x-dropdown-notifications align="right" />
 
                 <!-- Info button -->
-                <x-dropdown-help align="right" />
+                <x-dropdown-help align="right" /> --}}
 
                 <!-- Dark mode toggle -->
-                <x-theme-toggle />                
+                <x-theme-toggle />
 
                 <!-- Divider -->
                 <hr class="w-px h-6 bg-slate-200 dark:bg-slate-700 border-none" />

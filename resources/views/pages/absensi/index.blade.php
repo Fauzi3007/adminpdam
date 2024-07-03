@@ -11,13 +11,13 @@
             <!-- Right: Actions -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
 
-                <!-- Filter button -->
+                {{-- <!-- Filter button -->
                 <x-dropdown-filter align="left" />
 
                 <!-- Datepicker built with flatpickr -->
                 <x-datepicker />
 
-                <!-- Add view button -->
+                <!-- Add view button --> --}}
 
 
             </div>

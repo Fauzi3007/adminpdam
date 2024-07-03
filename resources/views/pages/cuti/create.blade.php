@@ -44,6 +44,13 @@
               <x-label for="keterangan">{{ __('Keterangan') }} </x-label>
               <x-input id="keterangan" type="text" name="keterangan" :value="old('keterangan')" required />
 
+            <x-label for="status">{{ __('Status') }} </x-label>
+            <select name="status" id="status" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <option value="Menunggu" {{ old('status') === 'Menunggu' ? 'selected' : '' }}>Menunggu</option>
+                <option value="Disetujui" {{ old('status') === 'Disetujui' ? 'selected' : '' }}>Disetujui</option>
+                <option value="Ditolak" {{ old('status') === 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
+            </select>
+
               <x-label for="foto">{{ __('Foto') }} </x-label>
                 <x-input id="foto" type="file" name="bukti_foto" :value="old('foto')"  />
                 <img id="preview" src="#" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;" />

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensi;
 use App\Models\Pegawai;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
@@ -15,7 +16,7 @@ class AbsensiController extends Controller
     {
 
         $absensis = Absensi::all();
-        return view('pages.absensi.index', compact('absensis')); 
+        return view('pages.absensi.index', compact('absensis'));
     }
 
     /**
@@ -24,7 +25,7 @@ class AbsensiController extends Controller
     public function create()
     {
         $pegawais = Pegawai::all();
-        return view('pages.absensi.create',compact('pegawais'));
+        return view('pages.absensi.create', compact('pegawais'));
     }
 
     /**
@@ -32,16 +33,17 @@ class AbsensiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+
+       $validated =  $request->validate([
             'tanggal' => 'required|date',
-            'waktu_masuk' => 'required',  
-            'waktu_keluar' => 'nullable', 
+            'waktu_masuk' => 'nullable',
+            'waktu_keluar' => 'nullable',
             'status' => 'required|string|max:20',
-            'keterangan' => 'nullable|string|in:Masuk,Izin,Sakit,Cuti',  
+            'keterangan' => 'nullable|string|in:Hadir,Izin,Sakit,Cuti',
             'id_pegawai' => 'required|integer',
         ]);
-        
-       Absensi::create($request->all()); 
+
+        Absensi::create($validated);
 
         return redirect()->route('absensi.index')->with('success', 'Absensi created successfully!');
     }
@@ -51,7 +53,6 @@ class AbsensiController extends Controller
      */
     public function show(Absensi $absensi)
     {
-       
         return view('pages.absensi.show', compact('absensi'));
     }
 
@@ -60,7 +61,11 @@ class AbsensiController extends Controller
      */
     public function edit(Absensi $absensi)
     {
-       
+        $absensi->waktu_masuk = Carbon::parse($absensi->waktu_masuk)->format('H:i');
+        if ($absensi->waktu_keluar) {
+
+            $absensi->waktu_keluar = Carbon::parse($absensi->waktu_keluar)->format('H:i');
+        }
         return view('pages.absensi.edit', compact('absensi'));
     }
 
@@ -72,14 +77,14 @@ class AbsensiController extends Controller
 
         $request->validate([
             'tanggal' => 'required|date',
-            'waktu_masuk' => 'required',  
-            'waktu_keluar' => 'nullable', 
+            'waktu_masuk' => 'nullable',
+            'waktu_keluar' => 'nullable',
             'status' => 'required|string|max:20',
-            'keterangan' => 'nullable|string|in:Masuk,Izin,Sakit,Cuti',  
+            'keterangan' => 'nullable|string|in:Hadir,Izin,Sakit,Cuti',
             'id_pegawai' => 'required|integer|exists:pegawais,id_pegawai',
         ]);
 
-        $absensi->update($request->all()); 
+        $absensi->update($request->all());
 
         return redirect()->route('absensi.index')->with('success', 'Absensi updated successfully!');
     }
@@ -93,5 +98,4 @@ class AbsensiController extends Controller
 
         return redirect()->route('absensi.index')->with('success', 'Absensi deleted successfully!');
     }
-    
 }

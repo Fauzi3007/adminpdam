@@ -39,6 +39,9 @@
                                             <div class="font-semibold text-left">No</div>
                                         </th>
                                         <th class="p-2 whitespace-nowrap">
+                                            <div class="font-semibold text-left">Foto Meteran</div>
+                                        </th>
+                                        <th class="p-2 whitespace-nowrap">
                                             <div class="font-semibold text-left">Tanggal</div>
                                         </th>
                                         <th class="p-2 whitespace-nowrap">
@@ -49,9 +52,6 @@
                                         </th>
                                         <th class="p-2 whitespace-nowrap">
                                             <div class="font-semibold text-left">Meteran Baru</div>
-                                        </th>
-                                        <th class="p-2 whitespace-nowrap">
-                                            <div class="font-semibold text-left">Foto Meteran</div>
                                         </th>
                                         <th class="p-2 whitespace-nowrap">
                                             <div class="font-semibold text-left">Pegawai</div>
@@ -73,6 +73,39 @@
                                                 </div>
                                             </td>
                                             <td class="p-2 whitespace-nowrap">
+                                                @if ($item->foto_meteran)
+                                                    <button class="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white sm:mt-0"
+                                                        onclick="showImage('{{ asset('storage/images/' . $item->foto_meteran) }}')">Show Image</button>
+                                                @endif
+                                            </td>
+                                            <!-- Modal -->
+                                            <div id="imageModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+                                                <div class="absolute inset-0 bg-black opacity-75"></div>
+                                                <div class="bg-white p-4 rounded-lg">
+                                                    <img id="modalImage" src="" alt="Modal Image" class="max-w-full max-h-[80vh] object-contain">
+                                                    <button id="closeModal" class="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700">
+                                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- JavaScript -->
+                                            <script>
+                                                function showImage(imageUrl) {
+                                                    const modal = document.getElementById('imageModal');
+                                                    const modalImage = document.getElementById('modalImage');
+                                                    modalImage.src = imageUrl;
+                                                    modal.classList.remove('hidden');
+                                                }
+
+                                                const closeModal = document.getElementById('closeModal');
+                                                closeModal.addEventListener('click', function() {
+                                                    const modal = document.getElementById('imageModal');
+                                                    modal.classList.add('hidden');
+                                                });
+                                            </script>
+                                            <td class="p-2 whitespace-nowrap">
                                                 <div class="text-left">{{ $item->tanggal}}</div>
                                             </td>
                                             <td class="p-2 whitespace-nowrap">
@@ -83,9 +116,6 @@
                                             </td>
                                             <td class="p-2 whitespace-nowrap">
                                                 <div class="text-left">{{ $item->meteran_baru }}</div>
-                                            </td>
-                                            <td class="p-2 whitespace-nowrap">
-                                                <div class="text-left">{{ $item->foto_meteran }}</div>
                                             </td>
                                             <td class="p-2 whitespace-nowrap">
                                                 <div class="text-left">{{ $item->pegawai->nama_lengkap }}</div>

@@ -59,7 +59,9 @@ class ApiPencatatanController extends Controller
     public function show(string $id)
     {
 
-        $pencatatan = Pencatatan::where('id_pegawai', $id)->whereMonth('tanggal', Carbon::now()->month)->get();
+        $pencatatan = Pencatatan::where('id_pegawai', $id)->
+        // whereMonth('tanggal', Carbon::now()->month)->
+        get();
         if (!$pencatatan) {
             return response()->json(['message' => 'Pencatatan not found'], 404);
         }

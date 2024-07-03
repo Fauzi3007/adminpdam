@@ -6,6 +6,7 @@ use App\Models\Cabang;
 use App\Models\Gaji;
 use App\Models\Jabatan;
 use App\Models\Pegawai;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -126,7 +127,7 @@ class PegawaiController extends Controller
      */
     public function destroy(Pegawai $pegawai)
     {
-
+        User::find($pegawai->id_user)->delete();
         $pegawai->delete();
 
         return redirect()->route('pegawai.index')->with('success', 'Pegawai deleted successfully!');
@@ -159,7 +160,7 @@ class PegawaiController extends Controller
 
     protected function deleteFile($filename)
     {
-        $filePath = 'public/images/' . $filename;
+        $filePath = 'public/storage/images/' . $filename;
         if (Storage::exists($filePath)) {
             Storage::delete($filePath);
         } else {

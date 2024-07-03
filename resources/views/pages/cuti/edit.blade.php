@@ -45,24 +45,20 @@
               <x-label for="keterangan">{{ __('Keterangan') }} </x-label>
               <x-input id="keterangan" type="text" name="keterangan" :value="old('keterangan',$cuti->keterangan)" required />
 
+
+                  <x-label for="status">{{ __('Status') }} </x-label>
+                  <select id="status" name="status" class="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                      <option value="disetujui" {{ $cuti->status === 'disetujui' ? 'selected' : '' }}>Disetujui</option>
+                      <option value="menunggu" {{ $cuti->status === 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                      <option value="ditolak" {{ $cuti->s   tatus === 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                    </select>
+
+
                 <x-label for="foto">{{ __('Foto') }} </x-label>
                 <x-input id="foto" type="file" name="bukti_foto" :value="old('foto')"  />
                 <img id="preview" src="#" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;" />
 
-              <x-label for="status">{{ __('Status') }} </x-label>
-                <x-select id="status" name="status" required>
-                    <option value="disetujui" {{ $cuti->status === 'disetujui' ? 'selected' : '' }}>Disetujui</option>
-                    <option value="menunggu" {{ $cuti->status === 'menunggu' ? 'selected' : '' }}>Menunggu</option>
-                    <option value="ditolak" {{ $cuti->status === 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                </x-select>
-          </div>
-
-          <x-label for="foto">{{ __('Foto') }} </x-label>
-                <x-input id="foto" type="file" name="bukti_foto" :value="old('foto')"  />
-                <img id="preview" src="#" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;" />
-
-
-
+                <img id="old" src="{{ asset('storage/images/' . $cuti->bukti_foto) }}" alt="old" style="max-width: 200px; max-height: 200px;" />
 
           <div class="flex items-center justify-between mt-6 col-span-2">
               <x-button type="submit">
