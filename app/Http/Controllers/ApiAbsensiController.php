@@ -21,20 +21,30 @@ class ApiAbsensiController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'tanggal' => 'required|date',
-            'waktu_masuk' => 'nullable',
-            'waktu_keluar' => 'nullable',
-            'status' => 'required|string|max:20',
-            'keterangan' => 'nullable|string',
-            'id_pegawai' => 'required|integer',
-        ]);
+{
+    $validated = $request->validate([
+        'tanggal' => 'required|date',
+        'waktu_masuk' => 'nullable|date_format:H:i',
+        'waktu_keluar' => 'nullable|date_format:H:i',
+        'status' => 'required|string|max:20',
+        'keterangan' => 'nullable|string|in:Hadir,Izin,Sakit,Cuti',
+        'id_pegawai' => 'required|integer|exists:pegawais,id_pegawai',
+    ]);
 
-        Absensi::create($request->all());
-
-        return response()->json(['message' => 'Absensi created successfully!'], 200);
+    // Combine date and time for timestamp fields
+    if ($request->waktu_masuk) {
+        $validated['waktu_masuk'] = Carbon::parse($request->tanggal . ' ' . $request->waktu_masuk)->format('Y-m-d H:i:s');
     }
+
+    if ($request->waktu_keluar) {
+        $validated['waktu_keluar'] = Carbon::parse($request->tanggal . ' ' . $request->waktu_keluar)->format('Y-m-d H:i:s');
+    }
+
+    Absensi::create($validated);
+
+    return redirect()->route('absensi.index')->with('success', 'Absensi created successfully!');
+}
+
 
     /**
      * Display the specified resource.
@@ -133,14 +143,25 @@ class ApiAbsensiController extends Controller
 
         $request->validate([
             'tanggal' => 'required|date',
-            'waktu_masuk' => 'nullable',
-            'waktu_keluar' => 'nullable',
+            'waktu_masuk' => 'nullable|date_format:H:i',
+            'waktu_keluar' => 'nullable|date_format:H:i',
             'status' => 'required|string|max:20',
-            'keterangan' => 'nullable|string',
+            'keterangan' => 'nullable|string|in:Hadir,Izin,Sakit,Cuti',
             'id_pegawai' => 'required|integer|exists:pegawais,id_pegawai',
         ]);
 
-        $absensi->update($request->all());
+        $data = $request->all();
+
+        // Combine date and time for timestamp fields
+        if ($request->waktu_masuk) {
+            $data['waktu_masuk'] = Carbon::parse($request->tanggal . ' ' . $request->waktu_masuk)->format('Y-m-d H:i:s');
+        }
+
+        if ($request->waktu_keluar) {
+            $data['waktu_keluar'] = Carbon::parse($request->tanggal . ' ' . $request->waktu_keluar)->format('Y-m-d H:i:s');
+        }
+
+        $absensi->update($data);
 
         return response()->json(['message' => 'Absensi updated successfully!'], 200);
     }
