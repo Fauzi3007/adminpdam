@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('absensis', function (Blueprint $table) {
             $table->increments('id_absensi');
             $table->date('tanggal');
-            $table->timestamp('waktu_masuk');
+            $table->timestamp('waktu_masuk')->nullable();
             $table->timestamp('waktu_keluar')->nullable();
             $table->string('status',20);
             $table->string('keterangan',100);

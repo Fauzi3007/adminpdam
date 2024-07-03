@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('pencatatans', function (Blueprint $table) {
             $table->increments('id_pencatatan');
-            $table->unsignedInteger('nomor_pelanggan')->constrained(
-                table: 'pelanggans', column:'nomor_pelanggan',indexName: 'pelangganForeign'
+            $table->unsignedInteger('id_pelanggan')->constrained(
+                table: 'pelanggans', column:'id_pelanggan',indexName: 'pelangganForeign'
             );
             $table->unsignedInteger('meteran_lama');
             $table->unsignedInteger('meteran_baru');
             $table->date('tanggal');
-            $table->string('foto_meteran', 50);
+            $table->string('foto_meteran', 50)->nullable();
             $table->unsignedInteger('id_pegawai')->constrained(
                 table: 'pegawais', column:'id_pegawai',indexName: 'pegawaiCatatForeign'
             );
 
-       
+
 
             $table->timestamps();
         });
